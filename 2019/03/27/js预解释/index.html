@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="js中的预解释js中变量声明提升函数定义提升可以说时js这门语言的一大特色，首先要了解的是js执行的环境 js执行环境 全局作用域：在浏览器加载html页面的时候，会为js提供一个全局作用域global，也叫顶级作用域window js的内存空间分两种：栈内存和堆内存 栈内存：提供js代码执行环境，存储基本数据类型，全局作用域和私有作用域其实都是栈内存 堆内存：存储引用类型如对象的属性名    预">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T13:49:32.544Z">
+<meta property="og:updated_time" content="2019-04-03T11:53:48.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js预解释">
 <meta name="twitter:description" content="js中的预解释js中变量声明提升函数定义提升可以说时js这门语言的一大特色，首先要了解的是js执行的环境 js执行环境 全局作用域：在浏览器加载html页面的时候，会为js提供一个全局作用域global，也叫顶级作用域window js的内存空间分两种：栈内存和堆内存 栈内存：提供js代码执行环境，存储基本数据类型，全局作用域和私有作用域其实都是栈内存 堆内存：存储引用类型如对象的属性名    预">
@@ -124,11 +124,13 @@
 <p>究竟是什么原因？上文中说了，var在预解释时，开辟内存空间，并将值赋为undefined</p>
 <p>但是let不一样，let虽然在预解释的过程中也会开辟空间给他用，但是他的值是没有的，很可怜，连undefined都没有！</p>
 <p>因此，let变量创建过程有提升的，但是初始化并没有提升</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tmp = <span class="number">123</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  tmp = <span class="string">'abc'</span>; <span class="comment">// ReferenceError</span></span><br><span class="line">  <span class="keyword">let</span> tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是会报错的，因为let让tmp在一个暂时性死区当中了</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/27/js预解释/" data-id="cjtz6h00n00025gtvfdwbwzvo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/27/js预解释/" data-id="cjuuicjb30004a8tvplofdagg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -136,6 +138,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/04/03/原型、对象、继承/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          原型、对象、继承
+        
+      </div>
+    </a>
   
   
     <a href="/2019/03/24/js类型转换和运算符/" id="article-nav-older" class="article-nav-link-wrap">
@@ -164,7 +175,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
     </div>
   </div>
 
@@ -177,15 +188,23 @@
       <ul>
         
           <li>
-            <a href="/2019/03/27/js预解释/">js预解释</a>
+            <a href="/2019/04/22/记一次用node接收上传文件/">记一次用node接收上传文件</a>
           </li>
         
           <li>
-            <a href="/2019/03/24/js类型转换和运算符/">js类型转换和运算符</a>
+            <a href="/2019/04/14/vue钩子函数的使用分析/">vue钩子函数的使用分析</a>
           </li>
         
           <li>
-            <a href="/2019/03/24/hello-world/">Hello World</a>
+            <a href="/2019/04/07/js执行/">js执行</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/let和const/">let和const</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/作用域和闭包/">作用域和闭包</a>
           </li>
         
       </ul>

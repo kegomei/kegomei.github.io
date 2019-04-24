@@ -62,6 +62,276 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-记一次用node接收上传文件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/22/记一次用node接收上传文件/" class="article-date">
+  <time datetime="2019-04-22T10:18:38.000Z" itemprop="datePublished">2019-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/22/记一次用node接收上传文件/">记一次用node接收上传文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="node接收文件上传"><a href="#node接收文件上传" class="headerlink" title="node接收文件上传"></a>node接收文件上传</h1><p>在做课程设计的时候有一个注册时上传用户头像的需求，先来说说自己的思路：</p>
+<ol>
+<li>首先，前端上传图片，发送请求至后端</li>
+<li>后端将文件接收，修改文件名，存入资源，然后将文件路径加入到用户信息的数据库中</li>
+<li>服务端将文件url返回给前端，供用户预览</li>
+<li>用户在使用页面时会直接使用数据库中该用户对应的头像url，显示出来</li>
+<li>用户可以重新上传，重新上传后，更新文件，其他不变</li>
+</ol>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><p>express提供了一个插件multiparty可以完成后端的需求，目前仅了解到其处理文件方面的功能</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先其他的挂载路由导入模块什么的我们不多说</span></span><br><span class="line"><span class="comment">//安装  npm i multiparty --save</span></span><br><span class="line"><span class="comment">//引入模块</span></span><br><span class="line"><span class="keyword">const</span> multipaty=<span class="built_in">require</span>(<span class="string">'multiparty'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//书写接收请求时的服务器要做的事情</span></span><br><span class="line">router.post(<span class="string">'/savePhoto'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,res,next</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//生成该对象并配置保存路径</span></span><br><span class="line">    <span class="keyword">const</span> form=<span class="keyword">new</span> multiparty.Form(&#123;<span class="attr">uploadDir</span>:<span class="string">'./dist/static'</span>&#125;);</span><br><span class="line">    <span class="comment">//上传完成后的处理</span></span><br><span class="line">    form.parse(req,<span class="function"><span class="keyword">function</span>(<span class="params">err,fields,files</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> filesTemp(<span class="built_in">JSON</span>.stringify(files,<span class="literal">null</span>,);</span><br><span class="line">        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">        	<span class="built_in">console</span>.log(err);    </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'filesTemp'</span>);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">先来看看这里的输出，随便上传的一张图片</span></span><br><span class="line"><span class="comment">&#123;"file":[&#123;"fieldName":"file","originalFilename":"TIM图片20190331192334.jpg","path":".\\dist\\static\\D8M-A-Rh6fjD12qmubeIwhAG.jpg","headers":&#123;"content-disposition":"form-data; name=\"file\"; filename=\"TIM图片20190331192334.jpg\"","content-type":"image/jpeg"&#125;,"size":662937&#125;]&#125;</span></span><br><span class="line"><span class="comment">可以看到,这个时候图片已经存储到本地了，接下来就要进行重命名，方便后期被用户请求</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">            <span class="comment">//一些配置，</span></span><br><span class="line">            <span class="keyword">const</span> inputFile=files.file[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> uploadPath=inputFile.path;</span><br><span class="line">            <span class="keyword">let</span> fileName=req.cookies.user.num+<span class="string">'.'</span>+inputFile.originalFilename.split(<span class="string">'.'</span>)[<span class="number">1</span>];<span class="comment">//利用前端发来的cookie将文件命名为 电话号码.后缀名的格式</span></span><br><span class="line">            <span class="keyword">const</span> dstPath=<span class="string">'./dist/static/'</span>+fileName;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//首先判断服务器中是否已经有该命名的文件</span></span><br><span class="line">            fs.exists(dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">exists</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(exists)&#123;</span><br><span class="line">                    <span class="comment">//如果有就删除</span></span><br><span class="line">                    fs.unlink(dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span>(err)<span class="keyword">return</span> <span class="built_in">console</span>.log(<span class="string">'删除失败'</span>+err);</span><br><span class="line">                        <span class="comment">//将上传文件重命名                                 （这里有一些小问题，如果文件格式不一样将不会删除，改进思路是只判断文件名，不考虑后缀）</span></span><br><span class="line">                        fs.rename(uploadPath,dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                            <span class="keyword">if</span>(err)&#123;</span><br><span class="line">                                <span class="built_in">console</span>.log(<span class="string">'rename error'</span>+err);</span><br><span class="line">                            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                                <span class="built_in">console</span>.log(<span class="string">'rename ok'</span>);</span><br><span class="line">                                <span class="comment">//更新数据库中用户头像路径</span></span><br><span class="line">                                users_personal.update(&#123;<span class="attr">phone_number</span>:req.cookies.user.num&#125;,&#123;<span class="attr">photo</span>:<span class="string">'/static/'</span>+fileName&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                                    <span class="keyword">if</span>(err) <span class="keyword">return</span> <span class="built_in">console</span>.log(err);</span><br><span class="line">                             		<span class="comment">//查询数据库并将数据更新到cookie</span></span><br><span class="line">                                    users_personal.find(&#123;<span class="attr">phone_number</span>: req.cookies.user.num&#125;,<span class="string">'password name photo school gender phone_number'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,ret</span>)</span>&#123;</span><br><span class="line">                                        res.cookie(<span class="string">'user'</span>,&#123;</span><br><span class="line">                                            name:ret[<span class="number">0</span>].name,</span><br><span class="line">                                            photo:ret[<span class="number">0</span>].photo,</span><br><span class="line">                                            school:ret[<span class="number">0</span>].school,</span><br><span class="line">                                            gender:ret[<span class="number">0</span>].gender,</span><br><span class="line">                                            num:ret[<span class="number">0</span>].phone_number</span><br><span class="line">                                        &#125;,&#123;</span><br><span class="line">                                            maxAge: <span class="number">600000</span></span><br><span class="line">                                        &#125;);</span><br><span class="line">                                        res.json(response);</span><br><span class="line">                                    &#125;)</span><br><span class="line">                                &#125;)</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;<span class="comment">//如果没有就直接重命名并更新数据库返回结果</span></span><br><span class="line">                    fs.rename(uploadPath,dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">                            <span class="built_in">console</span>.log(<span class="string">'rename error'</span>+err);</span><br><span class="line">                        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="built_in">console</span>.log(<span class="string">'rename ok'</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>可以看到，上面的代码已经可以看到回调地狱的雏形了，对此我感到十分荣幸，能够接触到真正的回调地狱，因此下一步的计划自然是优化，用promise封装</p>
+<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><p>前端在后台图片更新后前端图片并不会自动更新，因为图片路径没有变，所以还是从缓存中加载图片</p>
+<p>解决办法是在图片路径后面加上一个随机数作为请求参数，由于该参数是无意义的，所以不影响</p>
+<p>我用的是vue框架，因此前端要做的就是给路径后加一个”?t=tmp”</p>
+<p>在图片更换请求的回调中改变tmp就行了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/22/记一次用node接收上传文件/" data-id="cjuuicjb80006a8tvxusljhvp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vue钩子函数的使用分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/14/vue钩子函数的使用分析/" class="article-date">
+  <time datetime="2019-04-14T15:11:18.000Z" itemprop="datePublished">2019-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/14/vue钩子函数的使用分析/">vue钩子函数的使用分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/14/vue钩子函数的使用分析/" data-id="cjuuicjb50005a8tvgw0r7c2l" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-js执行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/07/js执行/" class="article-date">
+  <time datetime="2019-04-07T06:45:25.000Z" itemprop="datePublished">2019-04-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/07/js执行/">js执行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="客户端的js"><a href="#客户端的js" class="headerlink" title="客户端的js"></a>客户端的js</h1><p>浏览器可以认为是一个web应用的操作系统</p>
+<p>所有的js代码可以看作一个js程序</p>
+<p>js执行分为两个主要阶段</p>
+<h2 id="文档加载和脚本执行"><a href="#文档加载和脚本执行" class="headerlink" title="文档加载和脚本执行"></a>文档加载和脚本执行</h2><ol>
+<li><p>创建Document对象，并且开始解析Web页面，解析html元素和其文本内容后i俺家element对象的text节点到文档中，在此阶段document.readystate的值是“loading”</p>
+</li>
+<li><p>当html解析器没有遇到async和defer属性的<script>标签是，会把该元素添加到文档中，然后执行行内或外部脚本。他们会同步执行，并且在脚本下载和执行时html解析器会暂停。这是脚本就可以用document.write来把文本插入到输入流中。解析器回复时这些文本才会成为文档的一部分。</p>
+<p>同步脚本可以干的事情</p>
+<ul>
+<li>定义函数和注册事件</li>
+<li>遍历操作之前的dom树</li>
+</ul>
+</li>
+<li><p>如果遇到的时async属性的<script>标签,下载脚本，解析器不会暂停。但会在下载完后尽快执行。异步脚本时不可以使用document.write</p>
+</li>
+<li><p>当文档完成解析，document.readystate会变成“interactive”</p>
+</li>
+<li><p>这个时候，defer属性的标签，会按照在文档里的顺序执行，异步脚本也有可能在这个时候执行，同样无法使用document.write</p>
+</li>
+<li><p>之后，浏览器在document对象上触发DOMContentLoaded事件。这个时候就进入第二阶段，即事件驱动阶段，但是可能仍然由异步的脚本没执行</p>
+</li>
+</ol>
+<h2 id="事件驱动阶段"><a href="#事件驱动阶段" class="headerlink" title="事件驱动阶段"></a>事件驱动阶段</h2><ol>
+<li>这个时候，文档的解析才算全部完成，但是浏览器可能还在等待其他内容载入，比如图片。当所有的这些内容完成载入时，并且所有的异步脚本完成载入和执行，document的ready state属性才会变为complete</li>
+<li>从此刻起，会调用异步事件，以相应用户输入事件、网络事件、计时器过期等</li>
+</ol>
+<p>以上时间线只是理想状态，但是在实际过程中，浏览器处理的细节是不一样的。对于很长的文档或非常慢的网络链接，web浏览器理论上会渲染一部分文档，并且在所有脚本执行之前就能允许用户开始和页面交互了这种情况下，用户输入事件可能在程序执行的事件驱动器阶段开始之前触发</p>
+</script></p></li></ol>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/07/js执行/" data-id="cjuuicjb00003a8tvaqsmywni" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-let和const" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/let和const/" class="article-date">
+  <time datetime="2019-04-03T12:07:42.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/let和const/">let和const</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/let和const/" data-id="cjuuicjax0002a8tvw85ba2ka" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-作用域和闭包" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/作用域和闭包/" class="article-date">
+  <time datetime="2019-04-03T12:01:45.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/作用域和闭包/">作用域和闭包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="闭包和作用域、this"><a href="#闭包和作用域、this" class="headerlink" title="闭包和作用域、this"></a>闭包和作用域、this</h1><p>函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内，这种现象称为闭包————JavaScript权威指南</p>
+<p>以上是犀牛书上对闭包的解释，也就是说，所有的函数都是闭包（除了new，稍后会说）</p>
+<p>要去解释这个特性，就不得不说说JS的作用域规则了</p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><h2 id="访问闭包"><a href="#访问闭包" class="headerlink" title="访问闭包"></a>访问闭包</h2><p>清楚了作用域，我们就可以很好的利用作用域链这个工具去访问闭包。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> count++; <span class="comment">// has access to the outer counter</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> counter = makeCounter();</span><br><span class="line"></span><br><span class="line">alert( counter() ); <span class="comment">// 0</span></span><br><span class="line">alert( counter() ); <span class="comment">// 1</span></span><br><span class="line">alert( counter() ); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码就利用了返回一个嵌套函数去访问闭包中的变量，让我们用作用域链的规则去解释其原理</p>
+<ol>
+<li>一开始的时候，只有一个函数makeCounter，因此只存在一个全局的词法环境。词法环境存着两个东西，一个是环境记录，记录局部变量，在这个词法环境中只有一个makeCounter。另一个东西是【environment】，是一个隐藏的属性，指向外部环境的环境记录，此处为null，因此，外部属性是可访问的，而自己的环境记录是可以被内部词法环境所访问。</li>
+<li>makeCounter内部又是一个新的词法环境。它的环境记录中有count，【environment】指向外部环境记录，此处为全局，而全局中有makeCounter供其访问。</li>
+<li>下一层function，又是一个新的词法环境。他的环境记录无属性，但是，重点来了重点来了啊，他的【environment】属性指向的词法环境中可是有一个count，因此有且仅有该函数可以访问外部的count！</li>
+<li>再下一步，在将makeCounter赋值给counter时，是将其嵌套函数赋给了counter，而嵌套函数是一个地址，而地址有存放着该函数被创建时的词法环境，而又有一个变量指向该地址，因此，该作用域或者说变量count在函数调用完以后并不会被清除</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/作用域和闭包/" data-id="cjuuicjbd0008a8tvbszen0yd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-原型、对象、继承" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/原型、对象、继承/" class="article-date">
+  <time datetime="2019-04-03T11:57:55.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/原型、对象、继承/">原型、对象、继承</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/原型、对象、继承/" data-id="cjuuicjba0007a8tvdth3tqr3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-js预解释" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/03/27/js预解释/" class="article-date">
@@ -122,11 +392,13 @@
 <p>究竟是什么原因？上文中说了，var在预解释时，开辟内存空间，并将值赋为undefined</p>
 <p>但是let不一样，let虽然在预解释的过程中也会开辟空间给他用，但是他的值是没有的，很可怜，连undefined都没有！</p>
 <p>因此，let变量创建过程有提升的，但是初始化并没有提升</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tmp = <span class="number">123</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  tmp = <span class="string">'abc'</span>; <span class="comment">// ReferenceError</span></span><br><span class="line">  <span class="keyword">let</span> tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是会报错的，因为let让tmp在一个暂时性死区当中了</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/27/js预解释/" data-id="cjtz6h00n00025gtvfdwbwzvo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/27/js预解释/" data-id="cjuuicjb30004a8tvplofdagg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -214,7 +486,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/24/js类型转换和运算符/" data-id="cjtz6h00k00015gtv75p182sc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/24/js类型转换和运算符/" data-id="cjuuicjar0001a8tv4y6bo72h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -259,7 +531,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/24/hello-world/" data-id="cjtz6h00800005gtvhph8qa9s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/24/hello-world/" data-id="cjuuicjaf0000a8tvi0nwh3yd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -286,7 +558,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
     </div>
   </div>
 
@@ -299,15 +571,23 @@
       <ul>
         
           <li>
-            <a href="/2019/03/27/js预解释/">js预解释</a>
+            <a href="/2019/04/22/记一次用node接收上传文件/">记一次用node接收上传文件</a>
           </li>
         
           <li>
-            <a href="/2019/03/24/js类型转换和运算符/">js类型转换和运算符</a>
+            <a href="/2019/04/14/vue钩子函数的使用分析/">vue钩子函数的使用分析</a>
           </li>
         
           <li>
-            <a href="/2019/03/24/hello-world/">Hello World</a>
+            <a href="/2019/04/07/js执行/">js执行</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/let和const/">let和const</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/作用域和闭包/">作用域和闭包</a>
           </li>
         
       </ul>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>作用域和闭包 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="闭包和作用域、this函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内，这种现象称为闭包————JavaScript权威指南 以上是犀牛书上对闭包的解释，也就是说，所有的函数都是闭包（除了new，稍后会说） 要去解释这个特性，就不得不说说JS的作用域规则了 作用域访问闭包清楚了作用域，我们就可以很好的利用作用域链这个工具去访问闭包。 12345678910111213">
+<meta property="og:type" content="article">
+<meta property="og:title" content="作用域和闭包">
+<meta property="og:url" content="http://yoursite.com/2019/04/03/作用域和闭包/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="闭包和作用域、this函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内，这种现象称为闭包————JavaScript权威指南 以上是犀牛书上对闭包的解释，也就是说，所有的函数都是闭包（除了new，稍后会说） 要去解释这个特性，就不得不说说JS的作用域规则了 作用域访问闭包清楚了作用域，我们就可以很好的利用作用域链这个工具去访问闭包。 12345678910111213">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-03T17:09:47.502Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="作用域和闭包">
+<meta name="twitter:description" content="闭包和作用域、this函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内，这种现象称为闭包————JavaScript权威指南 以上是犀牛书上对闭包的解释，也就是说，所有的函数都是闭包（除了new，稍后会说） 要去解释这个特性，就不得不说说JS的作用域规则了 作用域访问闭包清楚了作用域，我们就可以很好的利用作用域链这个工具去访问闭包。 12345678910111213">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-作用域和闭包" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/03/作用域和闭包/" class="article-date">
+  <time datetime="2019-04-03T12:01:45.000Z" itemprop="datePublished">2019-04-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      作用域和闭包
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="闭包和作用域、this"><a href="#闭包和作用域、this" class="headerlink" title="闭包和作用域、this"></a>闭包和作用域、this</h1><p>函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内，这种现象称为闭包————JavaScript权威指南</p>
+<p>以上是犀牛书上对闭包的解释，也就是说，所有的函数都是闭包（除了new，稍后会说）</p>
+<p>要去解释这个特性，就不得不说说JS的作用域规则了</p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><h2 id="访问闭包"><a href="#访问闭包" class="headerlink" title="访问闭包"></a>访问闭包</h2><p>清楚了作用域，我们就可以很好的利用作用域链这个工具去访问闭包。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> count++; <span class="comment">// has access to the outer counter</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> counter = makeCounter();</span><br><span class="line"></span><br><span class="line">alert( counter() ); <span class="comment">// 0</span></span><br><span class="line">alert( counter() ); <span class="comment">// 1</span></span><br><span class="line">alert( counter() ); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码就利用了返回一个嵌套函数去访问闭包中的变量，让我们用作用域链的规则去解释其原理</p>
+<ol>
+<li>一开始的时候，只有一个函数makeCounter，因此只存在一个全局的词法环境。词法环境存着两个东西，一个是环境记录，记录局部变量，在这个词法环境中只有一个makeCounter。另一个东西是【environment】，是一个隐藏的属性，指向外部环境的环境记录，此处为null，因此，外部属性是可访问的，而自己的环境记录是可以被内部词法环境所访问。</li>
+<li>makeCounter内部又是一个新的词法环境。它的环境记录中有count，【environment】指向外部环境记录，此处为全局，而全局中有makeCounter供其访问。</li>
+<li>下一层function，又是一个新的词法环境。他的环境记录无属性，但是，重点来了重点来了啊，他的【environment】属性指向的词法环境中可是有一个count，因此有且仅有该函数可以访问外部的count！</li>
+<li>再下一步，在将makeCounter赋值给counter时，是将其嵌套函数赋给了counter，而嵌套函数是一个地址，而地址有存放着该函数被创建时的词法环境，而又有一个变量指向该地址，因此，该作用域或者说变量count在函数调用完以后并不会被清除</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/03/作用域和闭包/" data-id="cjuuicjbd0008a8tvbszen0yd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/03/let和const/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          let和const
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/03/原型、对象、继承/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">原型、对象、继承</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/22/记一次用node接收上传文件/">记一次用node接收上传文件</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/14/vue钩子函数的使用分析/">vue钩子函数的使用分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/07/js执行/">js执行</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/let和const/">let和const</a>
+          </li>
+        
+          <li>
+            <a href="/2019/04/03/作用域和闭包/">作用域和闭包</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
