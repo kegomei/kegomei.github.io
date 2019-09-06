@@ -6,16 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>let和const | Hexo</title>
+  <title>BFC | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="let和const">
-<meta property="og:url" content="http://yoursite.com/2019/04/03/let和const/index.html">
+  <meta name="description" content="盒模型盒模型分为两种，一种是ie下的： width=border+padding+content all=width+margin 即padding和border不改变盒子大小 另一种是W3C标准的： content=width 即width包含在最里面，不会随着border和padding的改变而改变，且这两者会改变盒子的整体大小 如何统一？设置box-sizing：content-box统一为">
+<meta name="keywords" content="cao">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BFC">
+<meta property="og:url" content="http://yoursite.com/2019/09/05/BFC/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="盒模型盒模型分为两种，一种是ie下的： width=border+padding+content all=width+margin 即padding和border不改变盒子大小 另一种是W3C标准的： content=width 即width包含在最里面，不会随着border和padding的改变而改变，且这两者会改变盒子的整体大小 如何统一？设置box-sizing：content-box统一为">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-03T12:07:42.470Z">
+<meta property="og:updated_time" content="2019-09-06T03:14:39.861Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="let和const">
+<meta name="twitter:title" content="BFC">
+<meta name="twitter:description" content="盒模型盒模型分为两种，一种是ie下的： width=border+padding+content all=width+margin 即padding和border不改变盒子大小 另一种是W3C标准的： content=width 即width包含在最里面，不会随着border和padding的改变而改变，且这两者会改变盒子的整体大小 如何统一？设置box-sizing：content-box统一为">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -151,27 +155,126 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-let和const" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-BFC" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      let和const
+      BFC
     </h1>
   
 
         
-        <a href="/2019/04/03/let和const/" class="archive-article-date">
-  	<time datetime="2019-04-03T12:07:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-03</time>
+        <a href="/2019/09/05/BFC/" class="archive-article-date">
+  	<time datetime="2019-09-05T01:23:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-05</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h2><p>盒模型分为两种，一种是ie下的：</p>
+<p>width=border+padding+content</p>
+<p>all=width+margin</p>
+<p>即padding和border不改变盒子大小</p>
+<p>另一种是W3C标准的：</p>
+<p>content=width</p>
+<p>即width包含在最里面，不会随着border和padding的改变而改变，且这两者会改变盒子的整体大小</p>
+<h4 id="如何统一？"><a href="#如何统一？" class="headerlink" title="如何统一？"></a>如何统一？</h4><p>设置box-sizing：content-box统一为标准模式</p>
+<p>设置box-sizing：border-box  统一为ie模式</p>
+<h4 id="怪异模式"><a href="#怪异模式" class="headerlink" title="怪异模式"></a>怪异模式</h4><p>IE下的盒模式即称为怪异模式，还有如下特点：</p>
+<ol>
+<li><p>inline元素和table-cell元素，vertical-align默认取值baseline；怪异模式下，table单元格中的图片的vertical-align默认取值bottom。因此在图片底部会有几像素的空间。</p>
+</li>
+<li><p>怪异模式下，对于table元素，字体的某些元素将不会从body等其他封装元素继承中的得到，特别是font-size属性。</p>
+</li>
+<li><p>怪异模式下，百分比高度被准确应用</p>
+</li>
+<li><p>标准模式下，non-replaced inline元素无法自定义大写；</p>
+<p>怪异模式下，定义这些元素的width、height属性可以影响这些元素显示的尺寸。</p>
+<blockquote>
+<p>根据css1 中所述：所谓可替换元素就是浏览器根据元素的标签和属性，来决定元素的具体显示内容。例如浏览器会根据<img>标签的src属性的值来读取图片信息并显示出来，而如果查看(x)html代码，则看不到图片的实际内容；又例如根据<input>标签的type属性来决定是显示输入框，还是单选按钮等。html中的<img>、<input>、<textarea>、</textarea><select>、<object>都是替换元素。而现在，这个概念已经发生了变化，在新的规范中，html5涉及到的<video>、<canvas>、<menu>元素也被认为是替换元素。因此可以把“替换”理解为“嵌入”</menu></canvas></video></object></select></p>
+<p> <strong>替换元素</strong>就可以理解为需要一些外部内容来嵌入它的空间的元素。</p>
+<p> 而<strong>不可替换元素</strong>（non-replaced element）就是不需要外部内容来填充它的空间的元素。</p>
+</blockquote>
+</li>
+</ol>
+<ol start="5">
+<li>标准模式下，overflow取值默认为visible；在怪异模式在，该溢出会被当做扩展box来对待，即元素的大小由内容决定，溢出不会裁剪，元素框自动调整，包含溢出内容</li>
+</ol>
+<p>浏览器解析时使用标准模式还是怪异模式，与网页中的DTD声明直接相关，DTD声明定义了标准文档的类型（标准模式解析）文档类型，会使浏览器使用相关的方式加载网页并显示，忽略DTD声明，将使网页进入怪异模式（quirks mode）。(Document Type Definition)</p>
+<h2 id="一些模型"><a href="#一些模型" class="headerlink" title="一些模型"></a>一些模型</h2><h4 id="盒子类型"><a href="#盒子类型" class="headerlink" title="盒子类型"></a>盒子类型</h4><ol>
+<li>inline：可设置边框边距，不可设置宽高，不换行</li>
+<li>inline-block：都可设置，不换行</li>
+<li>block：都可设置，不换行</li>
+<li>table、table-row、table-cell：自动按行按列排列</li>
+<li>匿名盒子会被当成块级元素</li>
+</ol>
+<h4 id="外边距重叠"><a href="#外边距重叠" class="headerlink" title="外边距重叠"></a>外边距重叠</h4><p>行内盒子、浮动盒子、绝对定位盒子的不会重叠</p>
+<h4 id="几种定位"><a href="#几种定位" class="headerlink" title="几种定位"></a>几种定位</h4><p>区分定位是为了区分元素的包含块</p>
+<ol>
+<li><p>相对定位(relative)：包含块为最近的一个父元素</p>
+<p>没什么特殊的，只是相对自己在原文档中的位置进行偏移，因此原位置保留不被占有并且会遮挡</p>
+</li>
+<li><p>绝对定位(absolute)：包含块为最近的定位元素(除static外任意值的元素)</p>
+<p>特殊的地方是脱离文档流，原位置会被后面的元素占据，其自己会紧跟前一个元素</p>
+</li>
+<li><p>固定定位(fixed)：包含块是窗口</p>
+<p>该元素会相对窗口进行变化，固定在一个位置，在设置固定值后不会自适应窗口大小</p>
+</li>
+<li><p>浮动(float)：</p>
+<p>也会脱离文档流</p>
+<p>它的浮动终点是父元素或接触到另一个浮动元素</p>
+<p>浮动元素之间会很好的贴在一起</p>
+<p>浮动元素的宽度随内容变化</p>
+<p>浮动元素后面的文本内容会记住浮动元素原有的位置，并避开，实现文字环绕效果</p>
+</li>
+</ol>
+<p>与浮动有关的一个叫clear的属性也值得介绍：浮动元素由于脱离了文档流，导致其父元素高度塌陷了。而clear属性可以决定元素的哪一个边不贴着浮动元素，从而另起一行。其原理是，如果设置的这一边有浮动元素，那么，该属性会为该元素和浮动元素共同的父元素赋予一个能够包含该元素和浮动元素的空间，撑开高度</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>:<span class="string">" "</span>;</span><br><span class="line">    <span class="attribute">display</span>:block;</span><br><span class="line">    <span class="attribute">clear</span>:both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的类加在浮动元素的父级上就可以还原父元素的高度</p>
+<h2 id="格式化上下文"><a href="#格式化上下文" class="headerlink" title="格式化上下文"></a>格式化上下文</h2><p>格式化上下文就是一些规则和现象，创建了格式化上下文的盒子就具备这些现象</p>
+<h4 id="行内格式上下文-IFC-："><a href="#行内格式上下文-IFC-：" class="headerlink" title="行内格式上下文(IFC)："></a>行内格式上下文(IFC)：</h4><ul>
+<li>在一个行内格式化上下文中，盒是一个接一个<strong>水平</strong>放置的，从包含块的顶部开始</li>
+<li>这些盒之间的<strong>水平</strong><code>margin</code>，<code>border</code>和<code>padding</code>都有效</li>
+<li>盒可能以不同的方式竖直对齐：以它们的底部或者顶部对齐，或者以它们里面的文本的基线对齐</li>
+</ul>
+<h4 id="块级格式化上下文："><a href="#块级格式化上下文：" class="headerlink" title="块级格式化上下文："></a>块级格式化上下文：</h4><p>规则们：</p>
+<ol>
+<li>内部的Box会在垂直方向，一个接一个地放置。</li>
+<li>Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠</li>
+<li>每个元素的margin box的左边， 与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。</li>
+<li>BFC的区域不会与float box重叠。</li>
+<li>BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。</li>
+<li>计算BFC的高度时，浮动元素也参与计算</li>
+</ol>
+<p>会创建BFC的元素：</p>
+<ul>
+<li>根元素(<code>&lt;html&gt;</code>)</li>
+<li>浮动元素（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/float" target="_blank" rel="noopener"><code>float</code></a> 不是 <code>none</code>）</li>
+<li>绝对定位元素（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/position" target="_blank" rel="noopener"><code>position</code></a> 为 <code>absolute</code> 或 <code>fixed</code>）</li>
+<li>行内块元素（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a> 为 <code>inline-block</code>）</li>
+<li>表格单元格（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a>为 <code>table-cell</code>，HTML表格单元格默认为该值）</li>
+<li>表格标题（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a> 为 <code>table-caption</code>，HTML表格标题默认为该值）</li>
+<li>匿名表格单元格元素（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a>为 <code>table、``table-row</code>、 <code>table-row-group、``table-header-group、``table-footer-group</code>（分别是HTML table、row、tbody、thead、tfoot的默认属性）或 <code>inline-table</code>）</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/overflow" target="_blank" rel="noopener"><code>overflow</code></a> 值不为 <code>visible</code> 的块元素</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a> 值为 <code>flow-root</code> 的元素</li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/contain" target="_blank" rel="noopener"><code>contain</code></a> 值为 <code>layout</code>、<code>content</code>或 paint 的元素</li>
+<li>弹性元素（<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a>为 <code>flex</code> 或 <code>inline-flex</code>元素的直接子元素）</li>
+<li>网格元素（<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/display" target="_blank" rel="noopener"><code>display</code></a>为 <code>grid</code> 或 <code>inline-grid</code> 元素的直接子元素）</li>
+<li>多列容器（元素的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-count" target="_blank" rel="noopener"><code>column-count</code></a> 或 <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/column-width" target="_blank" rel="noopener"><code>column-width</code></a> 不为 <code>auto，包括 ``column-count</code> 为 <code>1</code>）</li>
+<li><code>column-span</code> 为 <code>all</code> 的元素始终会创建一个新的BFC，即使该元素没有包裹在一个多列容器中</li>
+</ul>
+<p>合理利用会简便的实现一些效果，比如：</p>
+<ol>
+<li>两栏自适应布局：将第二个div的overflow设置为hidden—–利用第4条</li>
+<li>清除浮动：将父元素的overflow设置为hidden——利用第六条</li>
+<li>清除margin重叠：在外层包一个BFC</li>
+</ol>
+
       
 
       
@@ -200,6 +303,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">cao</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -250,7 +364,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/04/03/let和const/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/05/BFC/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -264,18 +378,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/04/07/js执行/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/09/06/IFC/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          js执行
+          IFC
         
       </div>
     </a>
   
   
-    <a href="/2019/04/03/作用域和闭包/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">作用域和闭包</div>
+    <a href="/2019/09/03/方法特性总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">方法特性总结</div>
       <i class="icon-circle-right"></i>
     </a>
   

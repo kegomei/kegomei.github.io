@@ -152,6 +152,148 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-作用域和闭包" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/作用域和闭包/">作用域和闭包</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/03/作用域和闭包/" class="archive-article-date">
+  	<time datetime="2019-04-03T12:01:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="闭包和作用域、this"><a href="#闭包和作用域、this" class="headerlink" title="闭包和作用域、this"></a>闭包和作用域、this</h1><p>函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内，这种现象称为闭包————JavaScript权威指南</p>
+<p>以上是犀牛书上对闭包的解释，也就是说，所有的函数都是闭包（除了new，稍后会说）</p>
+<p>要去解释这个特性，就不得不说说JS的作用域规则了</p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> cao=<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    a=<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ri</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a=<span class="number">1</span>;</span><br><span class="line">    cao();</span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">&#125;</span><br><span class="line">ri(); <span class="comment">//1</span></span><br><span class="line"><span class="built_in">console</span>.log(a);<span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+
+<p>看看上面这个例子，有两个作用域，一个是全局作用域，在预解释的过程中操里面的a是全局的啊，因此，即使是在ri里执行草修改的还是全局的，</p>
+<h2 id="访问闭包"><a href="#访问闭包" class="headerlink" title="访问闭包"></a>访问闭包</h2><p>清楚了作用域，我们就可以很好的利用作用域链这个工具去访问闭包。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeCounter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> count++; <span class="comment">// has access to the outer counter</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> counter = makeCounter();</span><br><span class="line"></span><br><span class="line">alert( counter() ); <span class="comment">// 0</span></span><br><span class="line">alert( counter() ); <span class="comment">// 1</span></span><br><span class="line">alert( counter() ); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码就利用了返回一个嵌套函数去访问闭包中的变量，让我们用作用域链的规则去解释其原理</p>
+<ol>
+<li>一开始的时候，只有一个函数makeCounter，因此只存在一个全局的词法环境。词法环境存着两个东西，一个是环境记录，记录局部变量，在这个词法环境中只有一个makeCounter。另一个东西是【environment】，是一个隐藏的属性，指向外部环境的环境记录，此处为null，因此，外部属性是可访问的，而自己的环境记录是可以被内部词法环境所访问。</li>
+<li>makeCounter内部又是一个新的词法环境。它的环境记录中有count，【environment】指向外部环境记录，此处为全局，而全局中有makeCounter供其访问。</li>
+<li>下一层function，又是一个新的词法环境。他的环境记录无属性，但是，重点来了重点来了啊，他的【environment】属性指向的词法环境中可是有一个count，因此有且仅有该函数可以访问外部的count！</li>
+<li>再下一步，在将makeCounter赋值给counter时，是将其嵌套函数赋给了counter，而嵌套函数是一个地址，而地址有存放着该函数被创建时的词法环境，而又有一个变量指向该地址，因此，该作用域或者说变量count在函数调用完以后并不会被清除</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//阮大神封装的遍历器，利用闭包</span></span><br><span class="line"><span class="keyword">var</span> it = makeIterator([<span class="string">'a'</span>, <span class="string">'b'</span>]);</span><br><span class="line"></span><br><span class="line">it.next() <span class="comment">// &#123; value: "a", done: false &#125;</span></span><br><span class="line">it.next() <span class="comment">// &#123; value: "b", done: false &#125;</span></span><br><span class="line">it.next() <span class="comment">// &#123; value: undefined, done: true &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeIterator</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> nextIndex = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    next: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> nextIndex &lt; array.length ?</span><br><span class="line">        &#123;<span class="attr">value</span>: array[nextIndex++], <span class="attr">done</span>: <span class="literal">false</span>&#125; :</span><br><span class="line">        &#123;<span class="attr">value</span>: <span class="literal">undefined</span>, <span class="attr">done</span>: <span class="literal">true</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//自己封装过的计算top值的闭包</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*需吸顶head类</span></span><br><span class="line"><span class="comment">*利用闭包的特性，保留选择器，每次重新计算top只需再调用一次即可</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">topObj</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.key=key;</span><br><span class="line">    <span class="keyword">var</span> tk=<span class="keyword">this</span>.key;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            key:tk,</span><br><span class="line">            top:$(tk).find(<span class="string">'.hd'</span>).offset().top,</span><br><span class="line">            bottom:$(tk).find(<span class="string">'.hd'</span>).offset().top+$(tk).height()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//用来重新计算top的方法，遍历数组调用里面的每一个闭包重新赋值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;CalculateFuncs.length;i++)&#123;</span><br><span class="line">        needFixObjs[i]=CalculateFuncs[i]();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/03/作用域和闭包/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-原型、对象、继承" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/原型、对象、继承/">原型、对象、继承</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/03/原型、对象、继承/" class="archive-article-date">
+  	<time datetime="2019-04-03T11:57:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/03/原型、对象、继承/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-js预解释" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -549,6 +691,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cao</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">IFC</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
