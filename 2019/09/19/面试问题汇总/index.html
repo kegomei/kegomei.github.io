@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019 | Hexo</title>
+  <title>面试问题汇总 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+  <meta name="description" content="蘑菇街 为什么手机端一般只用rem而不用百分比，为什么pc端就可以用百分比去适配 实现了响应式布局，但是有一个很明显的区别就是无法做到定高，用百分比定高bug很明显，而用px定高后不同分辨率的手机显示效果不一样。 此外，百分比不适用于字体，但是用rem可以 百分比只相对父元素 rem可以不用自己计算百分比，一键可以转 1.百分比不好计算 2.需要确定父级的宽度,百分比依照父级计算 3.宽度可以很好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试问题汇总">
+<meta property="og:url" content="http://yoursite.com/2019/09/19/面试问题汇总/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="蘑菇街 为什么手机端一般只用rem而不用百分比，为什么pc端就可以用百分比去适配 实现了响应式布局，但是有一个很明显的区别就是无法做到定高，用百分比定高bug很明显，而用px定高后不同分辨率的手机显示效果不一样。 此外，百分比不适用于字体，但是用rem可以 百分比只相对父元素 rem可以不用自己计算百分比，一键可以转 1.百分比不好计算 2.需要确定父级的宽度,百分比依照父级计算 3.宽度可以很好">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-10-16T15:49:14.728Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="面试问题汇总">
+<meta name="twitter:description" content="蘑菇街 为什么手机端一般只用rem而不用百分比，为什么pc端就可以用百分比去适配 实现了响应式布局，但是有一个很明显的区别就是无法做到定高，用百分比定高bug很明显，而用px定高后不同分辨率的手机显示效果不一样。 此外，百分比不适用于字体，但是用rem可以 百分比只相对父元素 rem可以不用自己计算百分比，一键可以转 1.百分比不好计算 2.需要确定父级的宽度,百分比依照父级计算 3.宽度可以很好">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,328 +154,357 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-面试问题汇总" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      面试问题汇总
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/19/面试问题汇总/" class="archive-article-date">
+
+        
+        <a href="/2019/09/19/面试问题汇总/" class="archive-article-date">
   	<time datetime="2019-09-19T06:46:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-19</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/面试问题汇总/">面试问题汇总</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="蘑菇街"><a href="#蘑菇街" class="headerlink" title="蘑菇街"></a>蘑菇街</h2><ol>
+<li><p>为什么手机端一般只用rem而不用百分比，为什么pc端就可以用百分比去适配</p>
+<p>实现了响应式布局，但是有一个很明显的区别就是<strong>无法做到定高</strong>，用百分比定高bug很明显，而用px定高后不同分辨率的手机显示效果不一样。</p>
+<p>此外，百分比不适用于字体，但是用rem可以</p>
+<p>百分比只相对父元素</p>
+<p>rem可以不用自己计算百分比，一键可以转</p>
+<p>1.百分比不好计算</p>
+<p>2.需要确定父级的宽度,百分比依照父级计算</p>
+<p>3.宽度可以很好适配，高度无法确定，</p>
+<p>4.可能会使形状严重改变！</p>
+<p>（IP6下可能是正方形，6p，其他设备可能就是变形，影响用户体验）</p>
+</li>
+<li><p>性能优化：</p>
+<p>维护页面展示的依赖关系很重要</p>
+<p>网络方面：</p>
+<ul>
+<li>dns缓存、浏览器缓存</li>
+<li>不同的cdn，防止携带cookie，减少静态资源访问的选择问题</li>
+<li>ssr服务端渲染</li>
+</ul>
+<p>图片方面：</p>
+<ul>
+<li>格式选择：png8、png32支持透明、png24不支持，安卓用webp</li>
+<li>雪碧图太大时容易出问题</li>
+<li>image inline，是会导致js体积增大的</li>
+<li>并发资源过多会阻塞js加载</li>
+</ul>
+<p>html、css、js：</p>
+<ul>
+<li>字节流到字符流</li>
+<li>css在head中引入，阻塞，可以保证样式加载完后再加载html，阻塞js执行，但不阻塞加载</li>
+<li>js不阻塞资源加载，因为会扫描预资源进行加载预加载，会阻塞执行，ui线程和js线程是互斥的，所以重绘和回流会导致js变慢</li>
+</ul>
+<p>重绘和回流：</p>
+<ul>
+<li><p>元素尺寸、布局、隐藏等改变需要重构时会触发回流。页面布局和几何样式发生改变时也会</p>
+</li>
+<li><p>重绘：当只改变元素外观的时候会触发，比如颜色、背景颜色、字体</p>
+</li>
+<li><p>回流比重绘，重绘不一定回流                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </p>
+<p>优化点：</p>
+<ol>
+<li><p>将频繁重绘回流的dom元素单独作为一个独立的图层，但是图层的合成消耗的运算量也很大。</p>
+<p>创建图层：1.perspective、transform 2.<video>节点  3.<canvas> flash  css动画  translate(拥有加速css过滤器的元素)  根元素  比兄弟元素z-index低</canvas></video></p>
+</li>
+<li><p>避免使用会触发重绘回流的css</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="Hello"><a href="#Hello" class="headerlink" title="Hello"></a>Hello</h2><ol>
+<li><p>不支持冒泡的事件</p>
+<ul>
+<li>UI事件 <ul>
+<li>load</li>
+<li>unload</li>
+<li>scroll</li>
+<li>resize</li>
+</ul>
+</li>
+<li>焦点事件 <ul>
+<li>blur</li>
+<li>focus</li>
+</ul>
+</li>
+<li>鼠标事件 <ul>
+<li>mouseleave</li>
+<li>mouseenter</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>一些原生js Dom操作汇总</p>
+<p><a href="https://www.cnblogs.com/zhuzhenwei918/p/7463329.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhuzhenwei918/p/7463329.html</a></p>
+<ul>
+<li><p>创建</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> node1=<span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line"><span class="keyword">var</span> node2=<span class="built_in">document</span>.createTextNode(<span class="string">'cao ni ma'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> el=<span class="built_in">document</span>.querySelector(<span class="string">'.cao'</span>) <span class="comment">//返回第一个元素</span></span><br><span class="line"><span class="keyword">var</span> el2=<span class="built_in">document</span>.querySelectorAll(<span class="string">'.cao'</span>) <span class="comment">//返回的是一个NodeList</span></span><br><span class="line"><span class="keyword">var</span> el3=<span class="built_in">document</span>.getElementByClassName(<span class="string">'cao'</span>)  <span class="comment">//返回的是一个HTMLCollection</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关于二者的区别</span></span><br><span class="line">都有.item()方法  参数为索引  超过则返回<span class="literal">null</span></span><br><span class="line">HTMLCollection多一个namedItem()  先找id  再找name  没有则返回<span class="literal">null</span></span><br><span class="line">HTMLCollection里的东西是动态的  dom变了  里面的东西也变了</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="大华"><a href="#大华" class="headerlink" title="大华"></a>大华</h2><ol>
+<li><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[]==![] <span class="comment">//true  因为！运算符先执行</span></span><br><span class="line"><span class="literal">null</span>、<span class="literal">undefined</span>只有与自身或者相互比较才相等，其他和任何比较都不相等</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a href="https://blog.csdn.net/qq_30715329/article/details/79817685" target="_blank" rel="noopener">https://blog.csdn.net/qq_30715329/article/details/79817685</a>这是关于数组引用改变的问题</p>
+</li>
+</ol>
+<h2 id="海康"><a href="#海康" class="headerlink" title="海康"></a>海康</h2><ol>
+<li><p>找出数组中的最大值</p>
+<p>Math.max.call(null,…a)</p>
+<p>Math.max.apply(null,a)</p>
+<p>Math.max(…a)</p>
+<p>这题主要考察call和apply传入参数的区别，apply是可以接受数组作为参数的</p>
+</li>
+<li><p>var {x,y,z}={“z”:1,”y”:2,”x”:3}</p>
+<p>答案：x，y，z均能被正确赋值，考察解构赋值其实是寻找同名属性进行辅助</p>
+</li>
+<li><p>document.body===document.querySelector(‘body’)  //true</p>
+<p>document.body.nodeType  //1</p>
+<p>两者得到的都是node类型，body的nodetype是1</p>
+<p>下面是常见的nodeType：</p>
+<ol>
+<li>元素element 1   </li>
+<li>属性attr 2   </li>
+<li>文本text 3   </li>
+<li>注释comments 8   </li>
+<li>文档document 9  </li>
+</ol>
+</li>
+<li><p>input标签的type</p>
+<table>
+<thead>
+<tr>
+<th>button</th>
+<th>定义可点击按钮（多数情况下，用于通过 JavaScript 启动脚本）。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>checkbox</td>
+<td>定义复选框。</td>
+</tr>
+<tr>
+<td>file</td>
+<td>定义输入字段和 “浏览”按钮，供文件上传。</td>
+</tr>
+<tr>
+<td>hidden</td>
+<td>定义隐藏的输入字段。</td>
+</tr>
+<tr>
+<td>image</td>
+<td>定义图像形式的提交按钮。</td>
+</tr>
+<tr>
+<td>password</td>
+<td>定义密码字段。该字段中的字符被掩码。</td>
+</tr>
+<tr>
+<td>radio</td>
+<td>定义单选按钮。</td>
+</tr>
+<tr>
+<td>reset</td>
+<td>定义重置按钮。重置按钮会清除表单中的所有数据。</td>
+</tr>
+<tr>
+<td>submit</td>
+<td>定义提交按钮。提交按钮会把表单数据发送到服务器。</td>
+</tr>
+<tr>
+<td>text</td>
+<td>定义单行的输入字段，用户可在其中输入文本。默认宽度为 20 个字符。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>parseInt(“ “)<br>NaN</p>
+</li>
+<li><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c=d=<span class="number">1</span>;</span><br><span class="line">&#125;)()</span><br><span class="line"><span class="built_in">console</span>.log(d);</span><br><span class="line"><span class="built_in">console</span>.log(c);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ready和onload的区别</p>
+<p>ready是dom结构加载完毕的事件，可以执行很多次</p>
+<p>onload是网页全部加载完包括图片，只能执行一次，后边的会覆盖前面的</p>
+</li>
+<li><p>浏览器版本判断</p>
+</li>
+<li><p>proxy和difinedproperty的区别</p>
+</li>
+</ol>
+<h2 id="宇视"><a href="#宇视" class="headerlink" title="宇视"></a>宇视</h2><ol>
+<li><p>选择器优先级最终版</p>
+<ol>
+<li>第一等：代表内联样式，如: style=””，权值为1000。\2. 第二等：代表ID选择器，如：#content，权值为0100。</li>
+<li>第三等：代表类，伪类和属性选择器，如.content，权值为0010。</li>
+<li>第四等：代表类型选择器和伪元素选择器，如div p，权值为0001。</li>
+<li>通配符、子选择器、相邻选择器等的。如*、&gt;、+,权值为0000。</li>
+<li>继承的样式没有权值。</li>
+<li>注意不用管内外关系</li>
+</ol>
+</li>
+<li><p>如何产生带有正方形项目的列表  <code>list-style-type``:``square</code></p>
+</li>
+<li><p>关于 z-index</p>
+</li>
+<li><p>margin、padding重叠问题</p>
+</li>
+<li><p>cookie和session</p>
+<p>session的sessionid存储于cookie，对于客户端而言，session是否过期和cookie的过期时间密切相关，服务端也可设置session的过期时间</p>
+<p>不支持cookie时可以用url重写的方式加上sessionid</p>
+<p>cookie最大只有4k</p>
+</li>
+<li><p>locallstorage和sessionstorage</p>
+<p>一般都只有5M</p>
+<p>locallstorage不主动删除是不会消失的，sessionStorage是会话级别的，关闭窗口就没了</p>
+<p>sessionStorage常用于表单、敏感信息登录</p>
+<p>api:setItem  getItem  removeItem clear  key() 获取某个索引的key</p>
+</li>
+</ol>
 
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/19/面试问题汇总/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/11/react学习疑问/" class="archive-article-date">
-  	<time datetime="2019-09-11T06:31:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/09/11/react学习疑问/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">react学习疑问</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/11/react学习疑问/">react学习疑问</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/10/对象和原始类型的转换/" class="archive-article-date">
-  	<time datetime="2019-09-10T00:16:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/10/对象和原始类型的转换/">对象和原始类型的转换</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/06/IFC/" class="archive-article-date">
-  	<time datetime="2019-09-06T02:41:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/06/IFC/">IFC</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">IFC</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/05/BFC/" class="archive-article-date">
-  	<time datetime="2019-09-05T01:23:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/05/BFC/">BFC</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">cao</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/03/方法特性总结/" class="archive-article-date">
-  	<time datetime="2019-09-03T01:13:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/03/方法特性总结/">方法特性总结</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/19/js题/" class="archive-article-date">
-  	<time datetime="2019-08-19T07:08:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/19/js题/">js题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/08/15/输入输出/" class="archive-article-date">
-  	<time datetime="2019-08-15T07:08:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/08/15/输入输出/">js输入输出  牛客</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/24/es6对象/" class="archive-article-date">
-  	<time datetime="2019-04-24T01:37:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/24/es6对象/">es6对象</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/04/22/记一次用node接收上传文件/" class="archive-article-date">
-  	<time datetime="2019-04-22T10:18:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/04/22/记一次用node接收上传文件/">记一次用node接收上传文件</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2019/page/2/">2</a><a class="extend next" rel="next" href="/archives/2019/page/2/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -495,8 +528,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

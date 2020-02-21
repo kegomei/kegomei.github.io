@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>方法特性总结 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="方法特性总结数组方法 数组操作方法是否改变原数组： 是：reverse  splice  sort 否：slice  concat  map  filter  join  slice  reduce foreach可能改变">
+  <meta name="description" content="方法特性总结数组方法 数组操作方法是否改变原数组： 是：reverse  splice  sort 否：slice  concat  map  filter  join  slice  reduce foreach可能改变  学习了一个标准里的方法来提取url参数，这个玩意儿创建以后其实就是formdata 12345678910111213141516171819202122//不兼容ielet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="方法特性总结">
 <meta property="og:url" content="http://yoursite.com/2019/09/03/方法特性总结/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="方法特性总结数组方法 数组操作方法是否改变原数组： 是：reverse  splice  sort 否：slice  concat  map  filter  join  slice  reduce foreach可能改变">
+<meta property="og:description" content="方法特性总结数组方法 数组操作方法是否改变原数组： 是：reverse  splice  sort 否：slice  concat  map  filter  join  slice  reduce foreach可能改变  学习了一个标准里的方法来提取url参数，这个玩意儿创建以后其实就是formdata 12345678910111213141516171819202122//不兼容ielet">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-04T07:57:47.594Z">
+<meta property="og:updated_time" content="2020-02-19T11:35:37.856Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="方法特性总结">
-<meta name="twitter:description" content="方法特性总结数组方法 数组操作方法是否改变原数组： 是：reverse  splice  sort 否：slice  concat  map  filter  join  slice  reduce foreach可能改变">
+<meta name="twitter:description" content="方法特性总结数组方法 数组操作方法是否改变原数组： 是：reverse  splice  sort 否：slice  concat  map  filter  join  slice  reduce foreach可能改变  学习了一个标准里的方法来提取url参数，这个玩意儿创建以后其实就是formdata 12345678910111213141516171819202122//不兼容ielet">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -180,7 +180,10 @@
 <p>否：slice  concat  map  filter  join  slice  reduce</p>
 <p>foreach可能改变</p>
 </li>
-<li></li>
+<li><p>学习了一个标准里的方法来提取url参数，这个玩意儿创建以后其实就是formdata</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不兼容ie</span></span><br><span class="line"><span class="keyword">let</span> url = <span class="keyword">new</span> URL(<span class="string">'https://example.com?foo=1&amp;bar=2'</span>);</span><br><span class="line"><span class="keyword">let</span> params = <span class="keyword">new</span> URLSearchParams(url.search.slice(<span class="number">1</span>));</span><br><span class="line">params.toString()  <span class="comment">//"foo=1&amp;bar=2"</span></span><br><span class="line">url.search   <span class="comment">//"?foo=1&amp;bar=2"</span></span><br><span class="line"><span class="comment">//可以用for of循环遍历</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> p <span class="keyword">of</span> params) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//还有其他的方便的api用来增删改查</span></span><br><span class="line"><span class="keyword">var</span> paramsString = <span class="string">"q=URLUtils.searchParams&amp;topic=api"</span></span><br><span class="line"><span class="keyword">var</span> searchParams = <span class="keyword">new</span> URLSearchParams(paramsString);</span><br><span class="line">searchParams.has(<span class="string">"topic"</span>) === <span class="literal">true</span>; <span class="comment">// true</span></span><br><span class="line">searchParams.get(<span class="string">"topic"</span>) === <span class="string">"api"</span>; <span class="comment">// true</span></span><br><span class="line">searchParams.getAll(<span class="string">"topic"</span>); <span class="comment">// ["api"]</span></span><br><span class="line">searchParams.get(<span class="string">"foo"</span>) === <span class="literal">null</span>; <span class="comment">// true</span></span><br><span class="line">searchParams.append(<span class="string">"topic"</span>, <span class="string">"webdev"</span>);</span><br><span class="line">searchParams.toString(); <span class="comment">// "q=URLUtils.searchParams&amp;topic=api&amp;topic=webdev"</span></span><br><span class="line">searchParams.set(<span class="string">"topic"</span>, <span class="string">"More webdev"</span>);</span><br><span class="line">searchParams.toString(); <span class="comment">// "q=URLUtils.searchParams&amp;topic=More+webdev"</span></span><br><span class="line">searchParams.delete(<span class="string">"topic"</span>);</span><br><span class="line">searchParams.toString(); <span class="comment">// "q=URLUtils.searchParams"</span></span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
 
       
@@ -329,7 +332,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 萝卜
+    		&copy; 2020 萝卜
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -417,6 +420,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">IFC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
             
             <div class="clearfix"></div>

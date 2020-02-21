@@ -152,6 +152,219 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-vue钩子函数的使用分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/14/vue钩子函数的使用分析/">vue钩子函数的使用分析</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/14/vue钩子函数的使用分析/" class="archive-article-date">
+  	<time datetime="2019-04-14T15:11:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/14/vue钩子函数的使用分析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-js执行" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/07/js执行/">js执行</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/07/js执行/" class="archive-article-date">
+  	<time datetime="2019-04-07T06:45:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="客户端的js"><a href="#客户端的js" class="headerlink" title="客户端的js"></a>客户端的js</h1><p>浏览器可以认为是一个web应用的操作系统</p>
+<p>所有的js代码可以看作一个js程序</p>
+<p>js执行分为两个主要阶段</p>
+<h2 id="文档加载和脚本执行"><a href="#文档加载和脚本执行" class="headerlink" title="文档加载和脚本执行"></a>文档加载和脚本执行</h2><ol>
+<li><p>创建Document对象，并且开始解析Web页面，解析html元素和其文本内容后i俺家element对象的text节点到文档中，在此阶段document.readystate的值是“loading”</p>
+</li>
+<li><p>当html解析器没有遇到async和defer属性的<script>标签是，会把该元素添加到文档中，然后执行行内或外部脚本。他们会同步执行，并且在脚本下载和执行时html解析器会暂停。这是脚本就可以用document.write来把文本插入到输入流中。解析器回复时这些文本才会成为文档的一部分。</p>
+<p>同步脚本可以干的事情</p>
+<ul>
+<li>定义函数和注册事件</li>
+<li>遍历操作之前的dom树</li>
+</ul>
+</li>
+<li><p>如果遇到的时async属性的<script>标签,下载脚本，解析器不会暂停。但会在下载完后尽快执行。异步脚本时不可以使用document.write</p>
+</li>
+<li><p>当文档完成解析，document.readystate会变成“interactive”</p>
+</li>
+<li><p>这个时候，defer属性的标签，会按照在文档里的顺序执行，异步脚本也有可能在这个时候执行，同样无法使用document.write</p>
+</li>
+<li><p>之后，浏览器在document对象上触发DOMContentLoaded事件。这个时候就进入第二阶段，即事件驱动阶段，但是可能仍然由异步的脚本没执行</p>
+</li>
+</ol>
+<h2 id="事件驱动阶段"><a href="#事件驱动阶段" class="headerlink" title="事件驱动阶段"></a>事件驱动阶段</h2><ol>
+<li>这个时候，文档的解析才算全部完成，但是浏览器可能还在等待其他内容载入，比如图片。当所有的这些内容完成载入时，并且所有的异步脚本完成载入和执行，document的ready state属性才会变为complete</li>
+<li>从此刻起，会调用异步事件，以相应用户输入事件、网络事件、计时器过期等</li>
+</ol>
+<p>以上时间线只是理想状态，但是在实际过程中，浏览器处理的细节是不一样的。对于很长的文档或非常慢的网络链接，web浏览器理论上会渲染一部分文档，并且在所有脚本执行之前就能允许用户开始和页面交互了这种情况下，用户输入事件可能在程序执行的事件驱动器阶段开始之前触发</p>
+</script></p></li></ol>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/07/js执行/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-let和const" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/03/let和const/">let和const</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/03/let和const/" class="archive-article-date">
+  	<time datetime="2019-04-03T12:07:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/03/let和const/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-作用域和闭包" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -610,7 +823,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 萝卜
+    		&copy; 2020 萝卜
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -698,6 +911,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">IFC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
             
             <div class="clearfix"></div>
