@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="计算给定数组 arr 中所有元素的总和 1234567891011//用reducefunction sum(arr) &amp;#123;    return arr.reduce(function(prev, curr, idx, arr)&amp;#123;        return prev + curr;    &amp;#125;);&amp;#125;//用evalfunction sum(arr) &amp;#123">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-21T08:09:11.056Z">
+<meta property="og:updated_time" content="2020-03-17T15:26:21.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js题">
 <meta name="twitter:description" content="计算给定数组 arr 中所有元素的总和 1234567891011//用reducefunction sum(arr) &amp;#123;    return arr.reduce(function(prev, curr, idx, arr)&amp;#123;        return prev + curr;    &amp;#125;);&amp;#125;//用evalfunction sum(arr) &amp;#123">
@@ -198,10 +198,15 @@
 </li>
 <li><p>在一个文件中直接将外部文件通过该文件导出</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//比如外部有个文件夹type</span></span><br><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">'./types'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//很方便</span></span><br></pre></td></tr></table></figure>
-
-
-
 </li>
+<li><p>填充一个数列</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a=<span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">20</span>)</span><br><span class="line">a.fill(<span class="number">0</span>)</span><br><span class="line">a.forEach(<span class="function">(<span class="params">v1,n,arr</span>)=&gt;</span>&#123;</span><br><span class="line">    arr[n]=v1+n</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>监听dom改变</p>
+<p>通过MutationObserver来监听dom改变</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mo = <span class="keyword">new</span> MutationObserver(callback);</span><br><span class="line"><span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">'div'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="string">'childList'</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">'arrtibutes'</span>: <span class="literal">true</span></span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">mo.observer(div, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">//option是要监听的改变对象</span></span><br><span class="line">childList: 子元素的变动</span><br><span class="line">attributes: 属性的变动</span><br><span class="line">characterData: 节点内容或节点文本的变动</span><br><span class="line">subtree: 所有下属节点（包括子节点和子节点的子节点）的变动</span><br><span class="line">attributeOldValueL: 值为<span class="literal">true</span>或者为<span class="literal">false</span>。如果为<span class="literal">true</span>，则表示需要记录变动前的属性值</span><br><span class="line">characterDataOldValue: 值为<span class="literal">true</span>或者为<span class="literal">false</span>。如果为<span class="literal">true</span>，则表示需要记录变动前的数据值</span><br><span class="line">attributesFilter: 值为一个数组，表示需要观察的特定属性（比如[<span class="string">'class'</span>, <span class="string">'str'</span>]）</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params">records</span>) </span>&#123;</span><br><span class="line">  records.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">record</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(record)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//records参数的类型是MutationRecod数组，属性如下</span></span><br><span class="line">type: 观察的变动类型（attribute、characterData或者childList）</span><br><span class="line">target: 发生变动的DOM对象</span><br><span class="line">addedNodes: 新增的DOM对象</span><br><span class="line">removeNodes: 删除的DOM对象</span><br><span class="line">previousSibling: 前一个同级的DOM对象，如果没有则返回<span class="literal">null</span></span><br><span class="line">nextSibling: 下一个同级的DOM对象，如果没有就返回<span class="literal">null</span></span><br><span class="line">attributeName: 发生变动的属性。如果设置了attributeFilter，则只返回预先指定的属性</span><br><span class="line">oldValue: 变动前的值。这个属性只对attribute和characterData变动有效，如果发生childList变动，则返回<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
 </ol>
 
       
@@ -433,11 +438,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cao</a>
+                <a href="javascript:void(0)" class="js-tag color4">IFC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">IFC</a>
+                <a href="javascript:void(0)" class="js-tag color4">cao</a>
               </li>
              
               <li class="article-tag-list-item">

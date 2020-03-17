@@ -6,20 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>对象和原始类型的转换 | Hexo</title>
+  <title>寒假学习es6-symbol | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
-<meta name="keywords" content="js">
+  <meta name="description" content="特性 symbol是原始值，因此不可以new Symbol（）会报错 常用做属性名 Symbol的描述被储存在内部的[[Description]]属性中，用toString读取 作为symbol的属性不可枚举 因此不会出现在for in循环，也不可被Obje.getOwnPropertyNames找到，唯一方法是Object.getOwnPropertySymbols Symbol不可参与数学运算">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对象和原始类型的转换">
-<meta property="og:url" content="http://yoursite.com/2019/09/10/对象和原始类型的转换/index.html">
+<meta property="og:title" content="寒假学习es6-symbol">
+<meta property="og:url" content="http://yoursite.com/2020/02/25/寒假学习es6-symbol/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
+<meta property="og:description" content="特性 symbol是原始值，因此不可以new Symbol（）会报错 常用做属性名 Symbol的描述被储存在内部的[[Description]]属性中，用toString读取 作为symbol的属性不可枚举 因此不会出现在for in循环，也不可被Obje.getOwnPropertyNames找到，唯一方法是Object.getOwnPropertySymbols Symbol不可参与数学运算">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-11T01:45:26.059Z">
+<meta property="og:updated_time" content="2020-02-25T15:35:55.068Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对象和原始类型的转换">
-<meta name="twitter:description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
+<meta name="twitter:title" content="寒假学习es6-symbol">
+<meta name="twitter:description" content="特性 symbol是原始值，因此不可以new Symbol（）会报错 常用做属性名 Symbol的描述被储存在内部的[[Description]]属性中，用toString读取 作为symbol的属性不可枚举 因此不会出现在for in循环，也不可被Obje.getOwnPropertyNames找到，唯一方法是Object.getOwnPropertySymbols Symbol不可参与数学运算">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -155,62 +154,87 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-对象和原始类型的转换" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-寒假学习es6-symbol" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      对象和原始类型的转换
+      寒假学习es6-symbol
     </h1>
   
 
         
-        <a href="/2019/09/10/对象和原始类型的转换/" class="archive-article-date">
-  	<time datetime="2019-09-10T00:16:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-10</time>
+        <a href="/2020/02/25/寒假学习es6-symbol/" class="archive-article-date">
+  	<time datetime="2020-02-25T06:25:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-25</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="原始值-gt-对象"><a href="#原始值-gt-对象" class="headerlink" title="原始值=&gt;对象"></a>原始值=&gt;对象</h2><p>在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s=<span class="string">'ri'</span></span><br><span class="line">s.len=<span class="number">4</span>;</span><br><span class="line"><span class="keyword">var</span> t=s.len  <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+        <h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ol>
+<li>symbol是原始值，因此不可以new Symbol（）会报错</li>
+<li>常用做属性名</li>
+<li>Symbol的描述被储存在内部的[[Description]]属性中，用toString读取</li>
+<li>作为symbol的属性不可枚举 因此不会出现在for in循环，也不可被Obje.getOwnPropertyNames找到，唯一方法是Object.getOwnPropertySymbols</li>
+<li>Symbol不可参与数学运算，参与布尔时是true</li>
+</ol>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><ol>
+<li><p>typeof可以直接检测symbol  返回的也是‘symbol’</p>
+</li>
+<li><p>用法示例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> firstName=<span class="built_in">Symbol</span>(<span class="string">"first name"</span>)</span><br><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    [firstName]:<span class="string">'l'</span>     <span class="comment">//用在计算属性中</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//可以作为defineProperty的参数</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person,firstName,&#123;<span class="attr">writable</span>:<span class="literal">false</span>&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>共享体系：</p>
+<p>可以用Symbol.for()来注册全局的symbol，也可以通过Symbol.keyFor()来查看变量的symbol名</p>
+<p>但是具体这个表的作用域是啥我也不知道：它们斡旋在全局 symbol 表（或注册表）与运行时环境之间。symbol 注册表通常构建在 JavaScript 编译器基础设施，所以 symbol 注册表的内容不会出现 JavaScript 运行时环境，除了通过它们的反射方法。（来自MDN的解释 我也不懂）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> uid=<span class="built_in">Symbol</span>.for(<span class="string">'uid'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(uid))  <span class="comment">//uid</span></span><br><span class="line"><span class="built_in">console</span>.log(uid)  <span class="comment">//Symbol('uid')</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uid2=<span class="built_in">Symbol</span>.for(<span class="string">'uid'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(uid2))  <span class="comment">//uid</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uid3=<span class="built_in">Symbol</span>(<span class="string">'uid'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(uid3))   <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
 
-<p>上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cao=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'cnm'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="well-known内部操作"><a href="#well-known内部操作" class="headerlink" title="well-known内部操作"></a>well-known内部操作</h3><p>es6通过将Symbol的一些示例属性作为内置对象的一些方法来暴露内部操作，现在举几个例子：</p>
+<ol>
+<li><p>Symbol.hasInstance()：就是instanceof这个操作符</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> cao=<span class="keyword">new</span> <span class="built_in">Array</span>()</span><br><span class="line"><span class="comment">//下面二者等价</span></span><br><span class="line">cao <span class="keyword">instanceof</span> <span class="built_in">Object</span></span><br><span class="line"><span class="built_in">Object</span>[<span class="built_in">Symbol</span>.hasInstance](cao)</span><br></pre></td></tr></table></figure>
 
-<p>这才是一个正儿八经的对象，其他的原始值到对象的转换也是如此</p>
-<p>用Object()将null和undefined转换为对象不会抛出异常,会获得一个空对象</p>
-<h2 id="对象-gt-原始值"><a href="#对象-gt-原始值" class="headerlink" title="对象=&gt;原始值"></a>对象=&gt;原始值</h2><p>首先两个对象之间的比较当且仅当它们引用相同时才相等，即使他们看起来长得一样</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[];</span><br><span class="line"><span class="keyword">var</span> b=[];</span><br><span class="line">a==b;  <span class="comment">//false</span></span><br><span class="line"><span class="keyword">var</span> c=[];</span><br><span class="line"><span class="keyword">var</span> d=c;</span><br><span class="line">d[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">c==d <span class="comment">//true   即使只改变d[0]，c[0]也会跟着变，因为他们的引用相同</span></span><br></pre></td></tr></table></figure>
+<p>Symbol.hasInstance这个属性是不可写不可枚举的，但是可以通过过defineProperty来重写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将Array的instance方法重写</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Array</span>,<span class="built_in">Symbol</span>.hasInstance,&#123;</span><br><span class="line">    value:<span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> v===<span class="number">520</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> i=<span class="number">520</span> <span class="keyword">instanceof</span> <span class="built_in">Array</span></span><br><span class="line"><span class="built_in">console</span>.log(i)     <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Symbol.isConcatSpreadable：这个属性用来规定该对象在被传入concat方法后的行为，这个属性为true时，这个对象有length属性和数字键，会被拆分</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//思考下面这个例子</span></span><br><span class="line"><span class="keyword">let</span> arr1=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">let</span> arr2=[<span class="number">5</span>,<span class="number">8</span>]</span><br><span class="line"></span><br><span class="line">arr1.concat(arr2,<span class="number">9</span>);   <span class="comment">//[1,2,3,5,8,9]</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="toString和valueOf"><a href="#toString和valueOf" class="headerlink" title="toString和valueOf()"></a>toString和valueOf()</h3><p>这两个方法在对象到原始值的转换过程中起着重要的作用，让我们先看看这两个方法的行为</p>
-<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString"></a>toString</h4><p>除了null和undeifined都有这个方法，执行结果通常和String()一致</p>
-<ul>
-<li>Number：可接收参数将其转换成值定进制的字符串</li>
-<li>Array：相当于join</li>
-<li>Function：返回函数的实现定义的字符串</li>
-<li>Date：返回可被js解析的日期和时间的字符串</li>
-<li>RegExp：返回的时创建它的直接量的字符串</li>
-<li>Object：[Object object]</li>
-</ul>
-<h4 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf()"></a>valueOf()</h4><p>function array object都返回自己本身</p>
-<p>reg、number、string、布尔返回类型为他们自己的值，如果是包装对象，则返回值和自己不全等</p>
-<p>date返回1970.1.1至今的毫秒数</p>
-<h3 id="转换规则"><a href="#转换规则" class="headerlink" title="转换规则"></a>转换规则</h3><h5 id="转成string："><a href="#转成string：" class="headerlink" title="转成string："></a>转成string：</h5><ul>
-<li>对象有toString()且返回原始值，则将原始值转为字符串，如Array、Function、regex等</li>
-<li>如果没有或返回的不是原始值，则看是否有valueOf()</li>
-<li>否则，报错</li>
-</ul>
-<h5 id="转成Number"><a href="#转成Number" class="headerlink" title="转成Number:"></a>转成Number:</h5><ul>
-<li>如果有valueOf。。。</li>
-<li>如果有toString()…</li>
-<li>报错</li>
-</ul>
-<p>隐式转换的规则同样适用于对象和原始值之间</p>
-<p>​    </p>
+<p>有没有想过数组元素为什么会被区别对待？其表现为先将自己拆成独立的元素，再一个个的放入新数组中。这就是Symbol.isConcatSpread在起作用，这个属性为true的时候就会有这样一个行为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr2[<span class="built_in">Symbol</span>.isConcatSpreadable]=<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">arr1.concat(arr2)     <span class="comment">//(4) [1, 2, 3, Array(2)]</span></span><br></pre></td></tr></table></figure>
+
+<p>将这个属性置为false，就会将整个arr2数组当成一个元素放入新数组</p>
+<p>当然我们也可以反过来</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr1=[<span class="string">'cao'</span>]</span><br><span class="line"><span class="keyword">let</span> obj=&#123;</span><br><span class="line">    <span class="number">0</span>:<span class="number">1</span>,</span><br><span class="line">    <span class="number">1</span>:<span class="number">2</span>,</span><br><span class="line">    <span class="number">2</span>:<span class="number">3</span>,</span><br><span class="line">    length:<span class="number">3</span>,</span><br><span class="line">    [<span class="built_in">Symbol</span>.isConcatSpreadable]:<span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(arr1.concat(obj))   <span class="comment">//[ 'cao', 1, 2, 3 ]</span></span><br></pre></td></tr></table></figure>
+
+<p>经过多次实验，length属性不可缺，其他的可缺，并且非数字键不会被加入</p>
+</li>
+<li><p>Symbol.match、Symbol.replace、Symbol.search、Symbol.split</p>
+<p>这四个属性均是用来模式匹配的，在es5中，这四个方法开发者如果想加入自己的逻辑，则必须使用正则即只能传入正则对象，而无法做到传入自定义对象</p>
+<p>有了Symbol以后，只需将自定义对象的这四个属性实现，就可以替代正则完成一些逻辑，下面是一个例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面这个对象相当于正则/^.&#123;10&#125;$/</span></span><br><span class="line"><span class="keyword">let</span> hasLengthOf10=&#123;</span><br><span class="line">    [<span class="built_in">Symbol</span>.match]:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value.length===<span class="number">10</span>?[value]:<span class="literal">null</span></span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="built_in">Symbol</span>.search]:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value.length===<span class="number">10</span>?<span class="number">0</span>:<span class="number">-1</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="built_in">Symbol</span>.split]:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value.length===<span class="number">10</span>?[<span class="string">','</span> ]:[value]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> message1=<span class="string">'hello world'</span>  <span class="comment">//11</span></span><br><span class="line"><span class="keyword">let</span> message2=<span class="string">'hello john'</span>   <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> match1=message1.match(hasLengthOf10);</span><br><span class="line"><span class="keyword">let</span> match2=message2.match(hasLengthOf10)</span><br><span class="line"><span class="built_in">console</span>.log(match1)    <span class="comment">// null</span></span><br><span class="line"><span class="built_in">console</span>.log(match2)    <span class="comment">// [ 'hello john' ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> search1=message1.search(hasLengthOf10)</span><br><span class="line"><span class="keyword">let</span> search2=message2.search(hasLengthOf10)</span><br><span class="line"><span class="built_in">console</span>.log(search1)	<span class="comment">// -1</span></span><br><span class="line"><span class="built_in">console</span>.log(search2)	<span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> split1=message1.split(hasLengthOf10)</span><br><span class="line"><span class="keyword">let</span> split2=message2.split(hasLengthOf10)</span><br><span class="line"><span class="built_in">console</span>.log(split1)		<span class="comment">//[ 'hello world' ]</span></span><br><span class="line"><span class="built_in">console</span>.log(split2)		[ <span class="string">','</span> ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Symbol.toPrimitive：这个属性表示对象的隐式类型转换规则，是定义在原型上的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Temperatura</span>(<span class="params">degrees</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.digrees=degrees</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Temperatura.prototype[<span class="built_in">Symbol</span>.toPrimitive]=<span class="function"><span class="keyword">function</span> (<span class="params">hint</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (hint) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"string"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.digrees+<span class="string">'\u00b0'</span>;  </span><br><span class="line">        <span class="keyword">case</span> <span class="string">"number"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.digrees;              <span class="comment">// /时触发</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">"default"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.digrees+<span class="string">" degrees"</span>    <span class="comment">// +时触发</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> freezing=<span class="keyword">new</span> Temperatura(<span class="number">32</span>)</span><br><span class="line"><span class="built_in">console</span>.log(freezing+<span class="string">"!"</span>)        <span class="comment">//32 degrees!</span></span><br><span class="line"><span class="built_in">console</span>.log(freezing/<span class="number">2</span>)			 <span class="comment">//16</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>(freezing))    <span class="comment">//32°</span></span><br></pre></td></tr></table></figure>
+
+<p>更常用的做法是将default模式处理成字符串模式或者数字模式</p>
+</li>
+<li><p>Symbol.toStringTag：定义了一个对象运用Object.prototype.toString.call(该对象)所返回的[object 自定义]中自定义的值</p>
+<p>比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a=[<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(a)   <span class="comment">// [object Array]</span></span><br></pre></td></tr></table></figure>
+
+<p>通过这个属性我们可以自定义</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype[<span class="built_in">Symbol</span>.toStringTag]=<span class="string">'Person'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//因为自定义对象会继承原生对象的tostring，所以在此重写</span></span><br><span class="line">Person.prototype.toString=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> me=<span class="keyword">new</span> Person(<span class="string">'lkf'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(me))   <span class="comment">//[object Person]</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
 
       
 
@@ -240,17 +264,6 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
@@ -301,7 +314,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/10/对象和原始类型的转换/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/25/寒假学习es6-symbol/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -315,18 +328,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/09/11/react学习疑问/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/03/10/ts-axiosx项目总结/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          react学习疑问
+          ts-axiosx项目总结
         
       </div>
     </a>
   
   
-    <a href="/2019/09/06/IFC/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">IFC</div>
+    <a href="/2020/02/22/寒假学习es6-对象/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">寒假学习es6-对象</div>
       <i class="icon-circle-right"></i>
     </a>
   

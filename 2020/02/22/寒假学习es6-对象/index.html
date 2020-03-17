@@ -6,20 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>对象和原始类型的转换 | Hexo</title>
+  <title>寒假学习es6-对象 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
-<meta name="keywords" content="js">
+  <meta name="description" content="新特性 方便的赋初始值 123456function createPerson(name,age)&amp;#123;    return &amp;#123;        name,        person    &amp;#125;&amp;#125;  规则：当对象字面量中属性名称只有变量时，会在作用域里面找同名变量初始化属性  可计算的属性 12345let suffix=&apos;name&apos;let person=&amp;#12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对象和原始类型的转换">
-<meta property="og:url" content="http://yoursite.com/2019/09/10/对象和原始类型的转换/index.html">
+<meta property="og:title" content="寒假学习es6-对象">
+<meta property="og:url" content="http://yoursite.com/2020/02/22/寒假学习es6-对象/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
+<meta property="og:description" content="新特性 方便的赋初始值 123456function createPerson(name,age)&amp;#123;    return &amp;#123;        name,        person    &amp;#125;&amp;#125;  规则：当对象字面量中属性名称只有变量时，会在作用域里面找同名变量初始化属性  可计算的属性 12345let suffix=&apos;name&apos;let person=&amp;#12">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-11T01:45:26.059Z">
+<meta property="og:updated_time" content="2020-02-24T07:24:30.182Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对象和原始类型的转换">
-<meta name="twitter:description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
+<meta name="twitter:title" content="寒假学习es6-对象">
+<meta name="twitter:description" content="新特性 方便的赋初始值 123456function createPerson(name,age)&amp;#123;    return &amp;#123;        name,        person    &amp;#125;&amp;#125;  规则：当对象字面量中属性名称只有变量时，会在作用域里面找同名变量初始化属性  可计算的属性 12345let suffix=&apos;name&apos;let person=&amp;#12">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -155,62 +154,78 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-对象和原始类型的转换" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-寒假学习es6-对象" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      对象和原始类型的转换
+      寒假学习es6-对象
     </h1>
   
 
         
-        <a href="/2019/09/10/对象和原始类型的转换/" class="archive-article-date">
-  	<time datetime="2019-09-10T00:16:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-10</time>
+        <a href="/2020/02/22/寒假学习es6-对象/" class="archive-article-date">
+  	<time datetime="2020-02-22T12:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-22</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="原始值-gt-对象"><a href="#原始值-gt-对象" class="headerlink" title="原始值=&gt;对象"></a>原始值=&gt;对象</h2><p>在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s=<span class="string">'ri'</span></span><br><span class="line">s.len=<span class="number">4</span>;</span><br><span class="line"><span class="keyword">var</span> t=s.len  <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+        <h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><ol>
+<li><p>方便的赋初始值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function createPerson(name,age)&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        name,</span><br><span class="line">        person</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cao=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'cnm'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这才是一个正儿八经的对象，其他的原始值到对象的转换也是如此</p>
-<p>用Object()将null和undefined转换为对象不会抛出异常,会获得一个空对象</p>
-<h2 id="对象-gt-原始值"><a href="#对象-gt-原始值" class="headerlink" title="对象=&gt;原始值"></a>对象=&gt;原始值</h2><p>首先两个对象之间的比较当且仅当它们引用相同时才相等，即使他们看起来长得一样</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[];</span><br><span class="line"><span class="keyword">var</span> b=[];</span><br><span class="line">a==b;  <span class="comment">//false</span></span><br><span class="line"><span class="keyword">var</span> c=[];</span><br><span class="line"><span class="keyword">var</span> d=c;</span><br><span class="line">d[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">c==d <span class="comment">//true   即使只改变d[0]，c[0]也会跟着变，因为他们的引用相同</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="toString和valueOf"><a href="#toString和valueOf" class="headerlink" title="toString和valueOf()"></a>toString和valueOf()</h3><p>这两个方法在对象到原始值的转换过程中起着重要的作用，让我们先看看这两个方法的行为</p>
-<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString"></a>toString</h4><p>除了null和undeifined都有这个方法，执行结果通常和String()一致</p>
+<p>规则：当对象字面量中属性名称只有变量时，会在作用域里面找同名变量初始化属性</p>
+</li>
+<li><p>可计算的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> suffix=<span class="string">'name'</span></span><br><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    [<span class="string">'first'</span>+suffix]:<span class="string">'l'</span>,</span><br><span class="line">    [<span class="string">'last'</span>+suffix]:<span class="string">'kf'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重复的属性会取后者（无论是不是严格模式），es5中严格模式下会报错</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    name:<span class="string">'cao'</span>,</span><br><span class="line">    name:<span class="string">'ri'</span></span><br><span class="line">&#125;</span><br><span class="line">person.name  <span class="comment">//'ri'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对象属性有了明确的顺序，影响了Object.getOwnPropertyName()和Reflect.ownkeys返回属性的顺序和Object.assign()处理的顺序，规则如下</p>
 <ul>
-<li>Number：可接收参数将其转换成值定进制的字符串</li>
-<li>Array：相当于join</li>
-<li>Function：返回函数的实现定义的字符串</li>
-<li>Date：返回可被js解析的日期和时间的字符串</li>
-<li>RegExp：返回的时创建它的直接量的字符串</li>
-<li>Object：[Object object]</li>
+<li>数字按升序</li>
+<li>字符串键和symbol按被加入的顺序</li>
 </ul>
-<h4 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf()"></a>valueOf()</h4><p>function array object都返回自己本身</p>
-<p>reg、number、string、布尔返回类型为他们自己的值，如果是包装对象，则返回值和自己不全等</p>
-<p>date返回1970.1.1至今的毫秒数</p>
-<h3 id="转换规则"><a href="#转换规则" class="headerlink" title="转换规则"></a>转换规则</h3><h5 id="转成string："><a href="#转成string：" class="headerlink" title="转成string："></a>转成string：</h5><ul>
-<li>对象有toString()且返回原始值，则将原始值转为字符串，如Array、Function、regex等</li>
-<li>如果没有或返回的不是原始值，则看是否有valueOf()</li>
-<li>否则，报错</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj=&#123;</span><br><span class="line">    a:<span class="number">1</span>,</span><br><span class="line">    <span class="number">0</span>:<span class="number">1</span>,</span><br><span class="line">    c:<span class="number">1</span>,</span><br><span class="line">    <span class="number">2</span>:<span class="number">1</span>,</span><br><span class="line">    b:<span class="number">1</span>,</span><br><span class="line">    <span class="number">1</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">obj.d=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyName(obj).join(<span class="string">""</span>))  <span class="comment">//'012abcbd'</span></span><br></pre></td></tr></table></figure>
+
+<p>for-in、Object.keys、JSON.stringify不受影响</p>
+</li>
+</ol>
+<h3 id="新方法"><a href="#新方法" class="headerlink" title="新方法"></a>新方法</h3><ol>
+<li><p>Object.is()：用来弥补全等运算符，传入两个参数，只要类型一样值一样就返回true，包括NaN</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+<span class="number">0</span>===<span class="number">-0</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span>.is(+<span class="number">0</span>,<span class="number">-0</span>)  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="literal">NaN</span>===<span class="literal">NaN</span>   <span class="comment">//false</span></span><br><span class="line"><span class="built_in">Object</span>.is(<span class="literal">NaN</span>,<span class="literal">NaN</span>)   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Object.assign()：将源对象的属性方法复制到目标对象（浅复制），但是不包括get方法，get方法的返回值会作为一个属性复制给目标对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reciever=&#123;&#125;,</span><br><span class="line">    supplier=&#123;</span><br><span class="line">        <span class="keyword">get</span> name&#123;</span><br><span class="line">        	<span class="keyword">return</span> <span class="string">'file.js'</span></span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="built_in">Object</span>.assign(receiver,supplier);</span><br><span class="line"><span class="keyword">let</span> descriptor=<span class="built_in">Object</span>.getOwnProperTyDecscriptor(receiver,<span class="string">'name'</span>);</span><br><span class="line"></span><br><span class="line">descriptor.value  <span class="comment">//'file.js'</span></span><br><span class="line">descriptor.get    <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>其中源对象可以不止一个，当两个对象具有同名属性时，后者覆盖前者</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reciever=&#123;&#125;</span><br><span class="line"><span class="built_in">Object</span>.assign(receiver,</span><br><span class="line">          &#123;</span><br><span class="line">    		type:<span class="string">'js'</span>,</span><br><span class="line">		  &#125;,&#123;</span><br><span class="line">    		type:<span class="string">'cao'</span></span><br><span class="line">		  &#125;</span><br><span class="line">             )</span><br><span class="line">receiver.type  <span class="comment">//'cao'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="增强对象原型"><a href="#增强对象原型" class="headerlink" title="增强对象原型"></a>增强对象原型</h3><ol>
+<li><p>改变对象原型，在es5中只有获取原型的方法：Object.getPrototypeOf()，在es6中新增了改变原型的方法：Object.setPrototypeOf</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'hello'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> dog=&#123;</span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        retrun <span class="string">'woof'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//以person对象为原型</span></span><br><span class="line"><span class="keyword">let</span> friend=<span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="built_in">console</span>.log(friend.getGreeting());  <span class="comment">//'hello'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend)===person)  <span class="comment">//true</span></span><br><span class="line"><span class="comment">//改变原型</span></span><br><span class="line"><span class="comment">//接受两个参数：第一个参数是要改变的对象，第二个是源对象</span></span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(friend,dog);</span><br><span class="line"><span class="built_in">console</span>.log(friend.getGreeting());</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend)===dog)  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用super引用原型</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下面是一个调用原型上方法的例子，目的是重写实例上的方法且需要调用原型上的方法</span></span><br><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    cao:<span class="string">'ri'</span>,</span><br><span class="line"></span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'hello'</span>+<span class="keyword">this</span>.cao</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> dog=&#123;</span><br><span class="line">    cao:<span class="string">'fuck'</span>,</span><br><span class="line">    getGreeting() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"woof"</span>+<span class="keyword">this</span>.cao</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> friend=&#123;</span><br><span class="line">    cao:<span class="string">'gan'</span>,</span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        *下面三种写法的异同</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//return Object.getPrototypeOf(this).getGreeting.call(this)    // 这是最正确的（在仅有一层调用的时候）</span></span><br><span class="line">        <span class="comment">//return this .getGreeting();                                  // 这样做它找到的不是原型上的方法 而是自己的方法 因此会堆栈溢出</span></span><br><span class="line">        <span class="comment">//return Object.getPrototypeOf(this).getGreeting();            // 这样做不能确保调用的this指向自己，会发生用到原型上的相同属性的情况</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//下面是es6的写法</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getGreeting();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//es5长串的写法还有一个问题，就是在多重继承的时候会出现问题</span></span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(friend,person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> relative=<span class="built_in">Object</span>.create(friend);</span><br><span class="line">relative.getGreeting()  <span class="comment">// 如果采用es5的写法会出现堆栈溢出  因为此时的this指向relative，而relative的原型是friend而不是person，因此会无限调用friend的getGreeting方法</span></span><br><span class="line"><span class="comment">// 用super就不会出现这个问题，因为super是静态的而不是动态的，一开始，super指向的就是person，在之后也不会变</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：super只能在使用简写的方法中使用，如果方法是用fuction定义的无法使用</p>
+</li>
+<li><p>super的原理：</p>
+<p>在es6中，每一个方法内部有一个叫做homeObject的属性，保存着方法所在的对象的信息。步骤如下：</p>
+<ul>
+<li>在homeObject属性上调用Object.getPrototypeOf()方法来检索原型的引用</li>
+<li>搜素原型  找到同名函数</li>
+<li>设置this绑定并调用相应的方法</li>
 </ul>
-<h5 id="转成Number"><a href="#转成Number" class="headerlink" title="转成Number:"></a>转成Number:</h5><ul>
-<li>如果有valueOf。。。</li>
-<li>如果有toString()…</li>
-<li>报错</li>
-</ul>
-<p>隐式转换的规则同样适用于对象和原始值之间</p>
-<p>​    </p>
+</li>
+</ol>
 
       
 
@@ -240,17 +255,6 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
@@ -301,7 +305,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/10/对象和原始类型的转换/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/02/22/寒假学习es6-对象/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -315,18 +319,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/09/11/react学习疑问/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/02/25/寒假学习es6-symbol/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          react学习疑问
+          寒假学习es6-symbol
         
       </div>
     </a>
   
   
-    <a href="/2019/09/06/IFC/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">IFC</div>
+    <a href="/2019/09/19/面试问题汇总/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">面试问题汇总</div>
       <i class="icon-circle-right"></i>
     </a>
   

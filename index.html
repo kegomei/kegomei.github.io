@@ -152,6 +152,356 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-ts-axiosx项目总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/10/ts-axiosx项目总结/">ts-axiosx项目总结</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/10/ts-axiosx项目总结/" class="archive-article-date">
+  	<time datetime="2020-03-10T06:59:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ts的便利"><a href="#ts的便利" class="headerlink" title="ts的便利"></a>ts的便利</h2><ol>
+<li><p>公共类型约束，比如限定http methods</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> type Method=<span class="string">'get'</span>|<span class="string">'GET'</span></span><br><span class="line">|<span class="string">'delete'</span>|<span class="string">'DELETE'</span></span><br><span class="line">|<span class="string">'head'</span>|<span class="string">'HEAD'</span></span><br><span class="line">|<span class="string">'options'</span>|<span class="string">'OPTIONS'</span></span><br><span class="line">|<span class="string">'post'</span>|<span class="string">'POST'</span></span><br><span class="line">|<span class="string">'put'</span>|<span class="string">'PUT'</span></span><br><span class="line">|<span class="string">'patch'</span>|<span class="string">'PATCH'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用接口使得类似函数的定义更简洁更语义化，比如将暴露出来的http methods，几个方法化为一个一样的接口</p>
+</li>
+</ol>
+<h2 id="axios工作流"><a href="#axios工作流" class="headerlink" title="axios工作流"></a>axios工作流</h2><ol>
+<li><p>处理url：将params中的东西拼到url后面，类似这样：/base/get?a=1&amp;b=2，然后将符号转义</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//转义操作</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encode</span> (<span class="params">val: string</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">encodeURIComponent</span>(val)</span><br><span class="line">    .replace(<span class="regexp">/%40/g</span>, <span class="string">'@'</span>)</span><br><span class="line">    .replace(<span class="regexp">/%3A/gi</span>, <span class="string">':'</span>)</span><br><span class="line">    .replace(<span class="regexp">/%24/g</span>, <span class="string">'$'</span>)</span><br><span class="line">    .replace(<span class="regexp">/%2C/gi</span>, <span class="string">','</span>)</span><br><span class="line">    .replace(<span class="regexp">/%20/g</span>, <span class="string">'+'</span>)</span><br><span class="line">    .replace(<span class="regexp">/%5B/gi</span>, <span class="string">'['</span>)</span><br><span class="line">    .replace(<span class="regexp">/%5D/gi</span>, <span class="string">']'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>请求headers预处理：</p>
+<ul>
+<li><p>首先得支持用户自定义headers，并解析出来用setRequestHeader来设置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.keys(headers).forEach(<span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data === <span class="literal">null</span> &amp;&amp; name.toLowerCase() === <span class="string">'content-type'</span>) &#123;</span><br><span class="line">      <span class="keyword">delete</span> headers[name]</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      request.setRequestHeader(name, headers[name])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在用户没有设置content-type时自动设置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">processHeaders</span> (<span class="params">headers: any, data: any</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">  normalizeHeaderName(headers, <span class="string">'Content-Type'</span>)</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (isPlainObject(data)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (headers &amp;&amp; !headers[<span class="string">'Content-Type'</span>]) &#123;</span><br><span class="line">      headers[<span class="string">'Content-Type'</span>] = <span class="string">'application/json;charset=utf-8'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> headers</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>将body中的data转成json（如果是对象的话）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">transformRequest</span> (<span class="params">data: any</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (isPlainObject(data)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(data)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> data</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>错误处理</p>
+<ul>
+<li><p>网络错误：可以直接用httpRequest对象的onerror发现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">request.onerror = <span class="function"><span class="keyword">function</span> <span class="title">handleError</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Network Error'</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>超时错误：请求默认的超时时间是 0，即永不超时。所以我们首先需要允许程序可以配置超时时间：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> AxiosRequestConfig &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  timeout?: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着在 <code>xhr</code> 函数中添加如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; <span class="comment">/*...*/</span> timeout &#125; = config</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (timeout) &#123;</span><br><span class="line">  request.timeout = timeout</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">request.ontimeout = <span class="function"><span class="keyword">function</span> <span class="title">handleTimeout</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`Timeout of <span class="subst">$&#123;timeout&#125;</span> ms exceeded`</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非200错误</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleResponse</span>(<span class="params">response: AxiosResponse</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (response.status &gt;= <span class="number">200</span> &amp;&amp; response.status &lt; <span class="number">300</span>) &#123;</span><br><span class="line">    resolve(response)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`Request failed with status code <span class="subst">$&#123;response.status&#125;</span>`</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ul>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/10/ts-axiosx项目总结/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-寒假学习es6-symbol" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/25/寒假学习es6-symbol/">寒假学习es6-symbol</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/25/寒假学习es6-symbol/" class="archive-article-date">
+  	<time datetime="2020-02-25T06:25:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ol>
+<li>symbol是原始值，因此不可以new Symbol（）会报错</li>
+<li>常用做属性名</li>
+<li>Symbol的描述被储存在内部的[[Description]]属性中，用toString读取</li>
+<li>作为symbol的属性不可枚举 因此不会出现在for in循环，也不可被Obje.getOwnPropertyNames找到，唯一方法是Object.getOwnPropertySymbols</li>
+<li>Symbol不可参与数学运算，参与布尔时是true</li>
+</ol>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><ol>
+<li><p>typeof可以直接检测symbol  返回的也是‘symbol’</p>
+</li>
+<li><p>用法示例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> firstName=<span class="built_in">Symbol</span>(<span class="string">"first name"</span>)</span><br><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    [firstName]:<span class="string">'l'</span>     <span class="comment">//用在计算属性中</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//可以作为defineProperty的参数</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person,firstName,&#123;<span class="attr">writable</span>:<span class="literal">false</span>&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>共享体系：</p>
+<p>可以用Symbol.for()来注册全局的symbol，也可以通过Symbol.keyFor()来查看变量的symbol名</p>
+<p>但是具体这个表的作用域是啥我也不知道：它们斡旋在全局 symbol 表（或注册表）与运行时环境之间。symbol 注册表通常构建在 JavaScript 编译器基础设施，所以 symbol 注册表的内容不会出现 JavaScript 运行时环境，除了通过它们的反射方法。（来自MDN的解释 我也不懂）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> uid=<span class="built_in">Symbol</span>.for(<span class="string">'uid'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(uid))  <span class="comment">//uid</span></span><br><span class="line"><span class="built_in">console</span>.log(uid)  <span class="comment">//Symbol('uid')</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uid2=<span class="built_in">Symbol</span>.for(<span class="string">'uid'</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(uid2))  <span class="comment">//uid</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uid3=<span class="built_in">Symbol</span>(<span class="string">'uid'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Symbol</span>.keyFor(uid3))   <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="well-known内部操作"><a href="#well-known内部操作" class="headerlink" title="well-known内部操作"></a>well-known内部操作</h3><p>es6通过将Symbol的一些示例属性作为内置对象的一些方法来暴露内部操作，现在举几个例子：</p>
+<ol>
+<li><p>Symbol.hasInstance()：就是instanceof这个操作符</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> cao=<span class="keyword">new</span> <span class="built_in">Array</span>()</span><br><span class="line"><span class="comment">//下面二者等价</span></span><br><span class="line">cao <span class="keyword">instanceof</span> <span class="built_in">Object</span></span><br><span class="line"><span class="built_in">Object</span>[<span class="built_in">Symbol</span>.hasInstance](cao)</span><br></pre></td></tr></table></figure>
+
+<p>Symbol.hasInstance这个属性是不可写不可枚举的，但是可以通过过defineProperty来重写</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将Array的instance方法重写</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Array</span>,<span class="built_in">Symbol</span>.hasInstance,&#123;</span><br><span class="line">    value:<span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> v===<span class="number">520</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> i=<span class="number">520</span> <span class="keyword">instanceof</span> <span class="built_in">Array</span></span><br><span class="line"><span class="built_in">console</span>.log(i)     <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Symbol.isConcatSpreadable：这个属性用来规定该对象在被传入concat方法后的行为，这个属性为true时，这个对象有length属性和数字键，会被拆分</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//思考下面这个例子</span></span><br><span class="line"><span class="keyword">let</span> arr1=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="keyword">let</span> arr2=[<span class="number">5</span>,<span class="number">8</span>]</span><br><span class="line"></span><br><span class="line">arr1.concat(arr2,<span class="number">9</span>);   <span class="comment">//[1,2,3,5,8,9]</span></span><br></pre></td></tr></table></figure>
+
+<p>有没有想过数组元素为什么会被区别对待？其表现为先将自己拆成独立的元素，再一个个的放入新数组中。这就是Symbol.isConcatSpread在起作用，这个属性为true的时候就会有这样一个行为</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr2[<span class="built_in">Symbol</span>.isConcatSpreadable]=<span class="literal">false</span></span><br><span class="line"></span><br><span class="line">arr1.concat(arr2)     <span class="comment">//(4) [1, 2, 3, Array(2)]</span></span><br></pre></td></tr></table></figure>
+
+<p>将这个属性置为false，就会将整个arr2数组当成一个元素放入新数组</p>
+<p>当然我们也可以反过来</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr1=[<span class="string">'cao'</span>]</span><br><span class="line"><span class="keyword">let</span> obj=&#123;</span><br><span class="line">    <span class="number">0</span>:<span class="number">1</span>,</span><br><span class="line">    <span class="number">1</span>:<span class="number">2</span>,</span><br><span class="line">    <span class="number">2</span>:<span class="number">3</span>,</span><br><span class="line">    length:<span class="number">3</span>,</span><br><span class="line">    [<span class="built_in">Symbol</span>.isConcatSpreadable]:<span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(arr1.concat(obj))   <span class="comment">//[ 'cao', 1, 2, 3 ]</span></span><br></pre></td></tr></table></figure>
+
+<p>经过多次实验，length属性不可缺，其他的可缺，并且非数字键不会被加入</p>
+</li>
+<li><p>Symbol.match、Symbol.replace、Symbol.search、Symbol.split</p>
+<p>这四个属性均是用来模式匹配的，在es5中，这四个方法开发者如果想加入自己的逻辑，则必须使用正则即只能传入正则对象，而无法做到传入自定义对象</p>
+<p>有了Symbol以后，只需将自定义对象的这四个属性实现，就可以替代正则完成一些逻辑，下面是一个例子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面这个对象相当于正则/^.&#123;10&#125;$/</span></span><br><span class="line"><span class="keyword">let</span> hasLengthOf10=&#123;</span><br><span class="line">    [<span class="built_in">Symbol</span>.match]:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value.length===<span class="number">10</span>?[value]:<span class="literal">null</span></span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="built_in">Symbol</span>.search]:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value.length===<span class="number">10</span>?<span class="number">0</span>:<span class="number">-1</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="built_in">Symbol</span>.split]:<span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value.length===<span class="number">10</span>?[<span class="string">','</span> ]:[value]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> message1=<span class="string">'hello world'</span>  <span class="comment">//11</span></span><br><span class="line"><span class="keyword">let</span> message2=<span class="string">'hello john'</span>   <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> match1=message1.match(hasLengthOf10);</span><br><span class="line"><span class="keyword">let</span> match2=message2.match(hasLengthOf10)</span><br><span class="line"><span class="built_in">console</span>.log(match1)    <span class="comment">// null</span></span><br><span class="line"><span class="built_in">console</span>.log(match2)    <span class="comment">// [ 'hello john' ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> search1=message1.search(hasLengthOf10)</span><br><span class="line"><span class="keyword">let</span> search2=message2.search(hasLengthOf10)</span><br><span class="line"><span class="built_in">console</span>.log(search1)	<span class="comment">// -1</span></span><br><span class="line"><span class="built_in">console</span>.log(search2)	<span class="comment">// 0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> split1=message1.split(hasLengthOf10)</span><br><span class="line"><span class="keyword">let</span> split2=message2.split(hasLengthOf10)</span><br><span class="line"><span class="built_in">console</span>.log(split1)		<span class="comment">//[ 'hello world' ]</span></span><br><span class="line"><span class="built_in">console</span>.log(split2)		[ <span class="string">','</span> ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Symbol.toPrimitive：这个属性表示对象的隐式类型转换规则，是定义在原型上的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Temperatura</span>(<span class="params">degrees</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.digrees=degrees</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Temperatura.prototype[<span class="built_in">Symbol</span>.toPrimitive]=<span class="function"><span class="keyword">function</span> (<span class="params">hint</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (hint) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"string"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.digrees+<span class="string">'\u00b0'</span>;  </span><br><span class="line">        <span class="keyword">case</span> <span class="string">"number"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.digrees;              <span class="comment">// /时触发</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">"default"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.digrees+<span class="string">" degrees"</span>    <span class="comment">// +时触发</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> freezing=<span class="keyword">new</span> Temperatura(<span class="number">32</span>)</span><br><span class="line"><span class="built_in">console</span>.log(freezing+<span class="string">"!"</span>)        <span class="comment">//32 degrees!</span></span><br><span class="line"><span class="built_in">console</span>.log(freezing/<span class="number">2</span>)			 <span class="comment">//16</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>(freezing))    <span class="comment">//32°</span></span><br></pre></td></tr></table></figure>
+
+<p>更常用的做法是将default模式处理成字符串模式或者数字模式</p>
+</li>
+<li><p>Symbol.toStringTag：定义了一个对象运用Object.prototype.toString.call(该对象)所返回的[object 自定义]中自定义的值</p>
+<p>比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a=[<span class="number">1</span>,<span class="number">2</span>]</span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(a)   <span class="comment">// [object Array]</span></span><br></pre></td></tr></table></figure>
+
+<p>通过这个属性我们可以自定义</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name=name</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype[<span class="built_in">Symbol</span>.toStringTag]=<span class="string">'Person'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//因为自定义对象会继承原生对象的tostring，所以在此重写</span></span><br><span class="line">Person.prototype.toString=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> me=<span class="keyword">new</span> Person(<span class="string">'lkf'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.toString.call(me))   <span class="comment">//[object Person]</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/25/寒假学习es6-symbol/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-寒假学习es6-对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/22/寒假学习es6-对象/">寒假学习es6-对象</a>
+    </h1>
+  
+
+        
+        <a href="/2020/02/22/寒假学习es6-对象/" class="archive-article-date">
+  	<time datetime="2020-02-22T12:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><ol>
+<li><p>方便的赋初始值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function createPerson(name,age)&#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        name,</span><br><span class="line">        person</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>规则：当对象字面量中属性名称只有变量时，会在作用域里面找同名变量初始化属性</p>
+</li>
+<li><p>可计算的属性</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> suffix=<span class="string">'name'</span></span><br><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    [<span class="string">'first'</span>+suffix]:<span class="string">'l'</span>,</span><br><span class="line">    [<span class="string">'last'</span>+suffix]:<span class="string">'kf'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重复的属性会取后者（无论是不是严格模式），es5中严格模式下会报错</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    name:<span class="string">'cao'</span>,</span><br><span class="line">    name:<span class="string">'ri'</span></span><br><span class="line">&#125;</span><br><span class="line">person.name  <span class="comment">//'ri'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对象属性有了明确的顺序，影响了Object.getOwnPropertyName()和Reflect.ownkeys返回属性的顺序和Object.assign()处理的顺序，规则如下</p>
+<ul>
+<li>数字按升序</li>
+<li>字符串键和symbol按被加入的顺序</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj=&#123;</span><br><span class="line">    a:<span class="number">1</span>,</span><br><span class="line">    <span class="number">0</span>:<span class="number">1</span>,</span><br><span class="line">    c:<span class="number">1</span>,</span><br><span class="line">    <span class="number">2</span>:<span class="number">1</span>,</span><br><span class="line">    b:<span class="number">1</span>,</span><br><span class="line">    <span class="number">1</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">obj.d=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyName(obj).join(<span class="string">""</span>))  <span class="comment">//'012abcbd'</span></span><br></pre></td></tr></table></figure>
+
+<p>for-in、Object.keys、JSON.stringify不受影响</p>
+</li>
+</ol>
+<h3 id="新方法"><a href="#新方法" class="headerlink" title="新方法"></a>新方法</h3><ol>
+<li><p>Object.is()：用来弥补全等运算符，传入两个参数，只要类型一样值一样就返回true，包括NaN</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+<span class="number">0</span>===<span class="number">-0</span>  <span class="comment">//true</span></span><br><span class="line"><span class="built_in">Object</span>.is(+<span class="number">0</span>,<span class="number">-0</span>)  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="literal">NaN</span>===<span class="literal">NaN</span>   <span class="comment">//false</span></span><br><span class="line"><span class="built_in">Object</span>.is(<span class="literal">NaN</span>,<span class="literal">NaN</span>)   <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Object.assign()：将源对象的属性方法复制到目标对象（浅复制），但是不包括get方法，get方法的返回值会作为一个属性复制给目标对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reciever=&#123;&#125;,</span><br><span class="line">    supplier=&#123;</span><br><span class="line">        <span class="keyword">get</span> name&#123;</span><br><span class="line">        	<span class="keyword">return</span> <span class="string">'file.js'</span></span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"><span class="built_in">Object</span>.assign(receiver,supplier);</span><br><span class="line"><span class="keyword">let</span> descriptor=<span class="built_in">Object</span>.getOwnProperTyDecscriptor(receiver,<span class="string">'name'</span>);</span><br><span class="line"></span><br><span class="line">descriptor.value  <span class="comment">//'file.js'</span></span><br><span class="line">descriptor.get    <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>其中源对象可以不止一个，当两个对象具有同名属性时，后者覆盖前者</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> reciever=&#123;&#125;</span><br><span class="line"><span class="built_in">Object</span>.assign(receiver,</span><br><span class="line">          &#123;</span><br><span class="line">    		type:<span class="string">'js'</span>,</span><br><span class="line">		  &#125;,&#123;</span><br><span class="line">    		type:<span class="string">'cao'</span></span><br><span class="line">		  &#125;</span><br><span class="line">             )</span><br><span class="line">receiver.type  <span class="comment">//'cao'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="增强对象原型"><a href="#增强对象原型" class="headerlink" title="增强对象原型"></a>增强对象原型</h3><ol>
+<li><p>改变对象原型，在es5中只有获取原型的方法：Object.getPrototypeOf()，在es6中新增了改变原型的方法：Object.setPrototypeOf</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'hello'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> dog=&#123;</span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        retrun <span class="string">'woof'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//以person对象为原型</span></span><br><span class="line"><span class="keyword">let</span> friend=<span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="built_in">console</span>.log(friend.getGreeting());  <span class="comment">//'hello'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend)===person)  <span class="comment">//true</span></span><br><span class="line"><span class="comment">//改变原型</span></span><br><span class="line"><span class="comment">//接受两个参数：第一个参数是要改变的对象，第二个是源对象</span></span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(friend,dog);</span><br><span class="line"><span class="built_in">console</span>.log(friend.getGreeting());</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getPrototypeOf(friend)===dog)  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用super引用原型</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下面是一个调用原型上方法的例子，目的是重写实例上的方法且需要调用原型上的方法</span></span><br><span class="line"><span class="keyword">let</span> person=&#123;</span><br><span class="line">    cao:<span class="string">'ri'</span>,</span><br><span class="line"></span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'hello'</span>+<span class="keyword">this</span>.cao</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> dog=&#123;</span><br><span class="line">    cao:<span class="string">'fuck'</span>,</span><br><span class="line">    getGreeting() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"woof"</span>+<span class="keyword">this</span>.cao</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> friend=&#123;</span><br><span class="line">    cao:<span class="string">'gan'</span>,</span><br><span class="line">    getGreeting()&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        *下面三种写法的异同</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//return Object.getPrototypeOf(this).getGreeting.call(this)    // 这是最正确的（在仅有一层调用的时候）</span></span><br><span class="line">        <span class="comment">//return this .getGreeting();                                  // 这样做它找到的不是原型上的方法 而是自己的方法 因此会堆栈溢出</span></span><br><span class="line">        <span class="comment">//return Object.getPrototypeOf(this).getGreeting();            // 这样做不能确保调用的this指向自己，会发生用到原型上的相同属性的情况</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//下面是es6的写法</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getGreeting();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//es5长串的写法还有一个问题，就是在多重继承的时候会出现问题</span></span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(friend,person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> relative=<span class="built_in">Object</span>.create(friend);</span><br><span class="line">relative.getGreeting()  <span class="comment">// 如果采用es5的写法会出现堆栈溢出  因为此时的this指向relative，而relative的原型是friend而不是person，因此会无限调用friend的getGreeting方法</span></span><br><span class="line"><span class="comment">// 用super就不会出现这个问题，因为super是静态的而不是动态的，一开始，super指向的就是person，在之后也不会变</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：super只能在使用简写的方法中使用，如果方法是用fuction定义的无法使用</p>
+</li>
+<li><p>super的原理：</p>
+<p>在es6中，每一个方法内部有一个叫做homeObject的属性，保存着方法所在的对象的信息。步骤如下：</p>
+<ul>
+<li>在homeObject属性上调用Object.getPrototypeOf()方法来检索原型的引用</li>
+<li>搜素原型  找到同名函数</li>
+<li>设置this绑定并调用相应的方法</li>
+</ul>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/02/22/寒假学习es6-对象/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-面试问题汇总" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -968,10 +1318,15 @@
 </li>
 <li><p>在一个文件中直接将外部文件通过该文件导出</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//比如外部有个文件夹type</span></span><br><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">'./types'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//很方便</span></span><br></pre></td></tr></table></figure>
-
-
-
 </li>
+<li><p>填充一个数列</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a=<span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">20</span>)</span><br><span class="line">a.fill(<span class="number">0</span>)</span><br><span class="line">a.forEach(<span class="function">(<span class="params">v1,n,arr</span>)=&gt;</span>&#123;</span><br><span class="line">    arr[n]=v1+n</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>监听dom改变</p>
+<p>通过MutationObserver来监听dom改变</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mo = <span class="keyword">new</span> MutationObserver(callback);</span><br><span class="line"><span class="keyword">var</span> div = <span class="built_in">document</span>.querySelector(<span class="string">'div'</span>);</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    <span class="string">'childList'</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">'arrtibutes'</span>: <span class="literal">true</span></span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">mo.observer(div, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">//option是要监听的改变对象</span></span><br><span class="line">childList: 子元素的变动</span><br><span class="line">attributes: 属性的变动</span><br><span class="line">characterData: 节点内容或节点文本的变动</span><br><span class="line">subtree: 所有下属节点（包括子节点和子节点的子节点）的变动</span><br><span class="line">attributeOldValueL: 值为<span class="literal">true</span>或者为<span class="literal">false</span>。如果为<span class="literal">true</span>，则表示需要记录变动前的属性值</span><br><span class="line">characterDataOldValue: 值为<span class="literal">true</span>或者为<span class="literal">false</span>。如果为<span class="literal">true</span>，则表示需要记录变动前的数据值</span><br><span class="line">attributesFilter: 值为一个数组，表示需要观察的特定属性（比如[<span class="string">'class'</span>, <span class="string">'str'</span>]）</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params">records</span>) </span>&#123;</span><br><span class="line">  records.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">record</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(record)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//records参数的类型是MutationRecod数组，属性如下</span></span><br><span class="line">type: 观察的变动类型（attribute、characterData或者childList）</span><br><span class="line">target: 发生变动的DOM对象</span><br><span class="line">addedNodes: 新增的DOM对象</span><br><span class="line">removeNodes: 删除的DOM对象</span><br><span class="line">previousSibling: 前一个同级的DOM对象，如果没有则返回<span class="literal">null</span></span><br><span class="line">nextSibling: 下一个同级的DOM对象，如果没有就返回<span class="literal">null</span></span><br><span class="line">attributeName: 发生变动的属性。如果设置了attributeFilter，则只返回预先指定的属性</span><br><span class="line">oldValue: 变动前的值。这个属性只对attribute和characterData变动有效，如果发生childList变动，则返回<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
 </ol>
 
       
@@ -1015,299 +1370,9 @@
 
 
   
-    <article id="post-输入输出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/15/输入输出/">js输入输出  牛客</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/15/输入输出/" class="archive-article-date">
-  	<time datetime="2019-08-15T07:08:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="js输入输出-牛客"><a href="#js输入输出-牛客" class="headerlink" title="js输入输出  牛客"></a>js输入输出  牛客</h1><h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>首先</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(line=readline())&#123;</span><br><span class="line">    line=line.split(<span class="string">' '</span>);</span><br><span class="line">    line.filter(<span class="function"><span class="keyword">function</span>(<span class="params">v,i,a</span>)</span>&#123;</span><br><span class="line">        a[i]=<span class="built_in">parseInt</span>(v);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">var</span> array=[...line]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//保留两位小数</span></span><br><span class="line"><span class="built_in">Math</span>.round(num * <span class="number">100</span>) / <span class="number">100</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p>排序要写排序函数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sortNum</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="字符编码"><a href="#字符编码" class="headerlink" title="字符编码"></a>字符编码</h2><p>/[\u4e00-\u9fa5]/.test(str[i])</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/15/输入输出/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-es6对象" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/24/es6对象/">es6对象</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/24/es6对象/" class="archive-article-date">
-  	<time datetime="2019-04-24T01:37:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="ES6对象"><a href="#ES6对象" class="headerlink" title="ES6对象"></a>ES6对象</h1><p>最近有一个需求，前端的vuex的store中有这样一个对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">user:&#123;</span><br><span class="line">    phone_number:<span class="string">''</span>,</span><br><span class="line">    school:<span class="string">''</span>,</span><br><span class="line">    photo:<span class="string">''</span>,</span><br><span class="line">    name:<span class="string">''</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>要做的是后台返回一个对象给它赋值，后台mongodb的键名刚好一致，想直接将查询结果作为对象返回，然后前端进行循环复制，因为有不想返回的密码信息，于是</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> back=&#123;</span><br><span class="line">                    name:ret[<span class="number">0</span>].name,</span><br><span class="line">                    photo:ret[<span class="number">0</span>].photo,</span><br><span class="line">                    school:ret[<span class="number">0</span>].school,</span><br><span class="line">                    phone_number:ret[<span class="number">0</span>].phone_number</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后，当我发现es6中对象有解构赋值以后，我发现我是个傻逼。。。直接赋值就行了，，会过滤掉没有的属性</p>
-<p>即，将前端的对象发送给后端，后端赋值，再返回给前端，同样是直接赋值</p>
-<p>于是乎，我决定好好开始研究下es6中的对象</p>
-<h3 id="解构赋值"><a href="#解构赋值" class="headerlink" title="解构赋值"></a>解构赋值</h3><p>接着上面的解构赋值</p>
-<p>let  {a,b}={a:’1’,b:’2’};</p>
-<p>实际上是 let {a:a,b:b}={a:’1’,b:’2’};的简写形式  相当于是一种遍历赋值,将相应变量替换或者说赋值更贴切</p>
-<p>解构赋值可以指定默认值，只有在赋值值严格等于undefined的时候才会生效</p>
-<p>let {x,y=5}={x:1,y:null}  //y=null</p>
-<p>let {x,y=5}={x:1}           //y=5  生效</p>
-<p>数组的解构赋值与对象类似，不同的是数组是按索引来的，是有序的依次赋值，对象是根据模式来匹配的</p>
-<p>let [x,y]=[1,2,3]     //x=1,y=2</p>
-<p>下面总结一下用途</p>
-<ol>
-<li><p>交换变量</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">[x, y] = [y, x];</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数返回多个值的时候 直接将函数返回结果赋值给类似于[a,b,c]这样的变量数组</p>
-</li>
-<li><p>和开篇的例子一样  提取JSON中想要的数据作为新的对象</p>
-</li>
-<li><p>定义默认参数</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">jQuery.ajax = <span class="function"><span class="keyword">function</span> (<span class="params">url, &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">  async = true,</span></span></span><br><span class="line"><span class="function"><span class="params">  beforeSend = function (</span>) </span>&#123;&#125;,</span><br><span class="line">  cache = <span class="literal">true</span>,</span><br><span class="line">  complete = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  crossDomain = <span class="literal">false</span>,</span><br><span class="line">  global = <span class="literal">true</span>,</span><br><span class="line">  <span class="comment">// ... more config</span></span><br><span class="line">&#125; = &#123;&#125;) &#123;</span><br><span class="line">  <span class="comment">// ... do stuff</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>遍历map</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">map.set(<span class="string">'first'</span>, <span class="string">'hello'</span>);</span><br><span class="line">map.set(<span class="string">'second'</span>, <span class="string">'world'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> [key, value] <span class="keyword">of</span> map) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key + <span class="string">" is "</span> + value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>最最常用的  加载模块  你不得不熟悉</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; SourceMapConsumer, SourceNode &#125; = <span class="built_in">require</span>(<span class="string">"source-map"</span>);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="一些简写"><a href="#一些简写" class="headerlink" title="一些简写"></a>一些简写</h3><ol>
-<li><p>第一个就是其实自己一直在用的方法的简写</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//es5中对象的方法</span></span><br><span class="line"><span class="keyword">const</span> o = &#123;</span><br><span class="line">  method: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello!"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//es6中</span></span><br><span class="line"><span class="keyword">const</span> o = &#123;</span><br><span class="line">  method() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello!"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;<span class="comment">//这种写法在我使用vue时经常用到，只不过觉得理所当然，其实它时es6里的</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>属性的简写</p>
-<p>上面也说了，解构赋值实际上是属性的简写</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = <span class="string">'bar'</span>;</span><br><span class="line"><span class="keyword">const</span> baz = &#123;foo&#125;;</span><br><span class="line">baz <span class="comment">// &#123;foo: "bar"&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">const</span> baz = &#123;<span class="attr">foo</span>: foo&#125;;<span class="comment">//属性名和值变量名同名</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="一些新的特性"><a href="#一些新的特性" class="headerlink" title="一些新的特性"></a>一些新的特性</h3><ol>
-<li><p>属性名可以用表达式</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> propKey = <span class="string">'foo'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  [propKey]: <span class="literal">true</span>,  <span class="comment">//实际上取了propKey的值‘foo’作为属性名</span></span><br><span class="line">  [<span class="string">'a'</span> + <span class="string">'bc'</span>]: <span class="number">123</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//也可以用来定义方法名</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对象的方法和函数一样，有了name属性，返回方法名</p>
-<p>如果方法是get或set来设置的，那么name属性在get和set上，而不死在方法名上，返回‘get 方法名’</p>
-<p>bind方法创造的构造函数，name是“bound 原函数名”</p>
-</li>
-<li><p>在对象的方法中，super关键字指向对象的原型 相当于Object.getPrototypeOf(this)</p>
-</li>
-</ol>
-<h3 id="遍历对象属性"><a href="#遍历对象属性" class="headerlink" title="遍历对象属性"></a>遍历对象属性</h3><ol>
-<li>for..in   遍历对象自身和继承的可枚举属性（不含Symbol）</li>
-<li>Object.keys（obj）：返回所有对象自身可枚举属性的key</li>
-<li>Object.getOwnPropertyNames(obj):返回一个数组，包含对象自身的所有属性（不含symbol）的key，包含继承</li>
-<li>Object.getOwnPropertySymbols(obj):返回一个数组，包含对象自身的所有 Symbol 属性的键名。</li>
-<li>Reflect.ownKeys(obj):返回数组，包含所有键名，所有，包含Symbol、字符串、不可枚举</li>
-</ol>
-<p>以上的 5 种方法遍历对象的键名，都遵守同样的属性遍历的次序规则。</p>
-<ul>
-<li>首先遍历所有数值键，按照数值升序排列。</li>
-<li>其次遍历所有字符串键，按照加入时间升序排列。</li>
-<li>最后遍历所有 Symbol 键，按照加入时间升序排列。</li>
-</ul>
-<h3 id="…运算符"><a href="#…运算符" class="headerlink" title="…运算符"></a>…运算符</h3><p>在es2018中，这个运算符被引入了对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123;...z&#125;=&#123;<span class="attr">a</span>:<span class="number">3</span>,<span class="attr">b</span>:<span class="number">4</span>&#125;</span><br><span class="line"><span class="comment">//这时  z会被变成对象</span></span><br><span class="line">z==&#123;</span><br><span class="line">    a:<span class="number">3</span>,</span><br><span class="line">    b:<span class="number">4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>解构赋值必须是最后一个参数，且是浅拷贝</p>
-<p>可以用来扩展函数的参数</p>
-<p>也可以用来取出所有可遍历属性，如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> z = &#123; <span class="attr">a</span>: <span class="number">3</span>, <span class="attr">b</span>: <span class="number">4</span> &#125;;</span><br><span class="line"><span class="keyword">let</span> n = &#123; ...z &#125;;</span><br><span class="line">n <span class="comment">// &#123; a: 3, b: 4 &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//用来合并对象</span></span><br><span class="line"><span class="keyword">let</span> ab = &#123; ...a, ...b &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//同名属性会被...后面的属性覆盖</span></span><br><span class="line"><span class="keyword">let</span> aWithOverrides = &#123; ...a, <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">2</span> &#125;;<span class="comment">//a对象中的x，y会被覆盖</span></span><br><span class="line"><span class="comment">//设置默认属性</span></span><br><span class="line"><span class="keyword">let</span> aWithDefaults = &#123; <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">2</span>, ...a &#125;;<span class="comment">//x和y都有默认值</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="原型相关"><a href="#原型相关" class="headerlink" title="原型相关"></a>原型相关</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建没有原型的对象</span></span><br><span class="line"><span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line"><span class="comment">//创建空对象</span></span><br><span class="line"><span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype)</span><br></pre></td></tr></table></figure>
-
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/24/es6对象/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-记一次用node接收上传文件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/22/记一次用node接收上传文件/">记一次用node接收上传文件</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/22/记一次用node接收上传文件/" class="archive-article-date">
-  	<time datetime="2019-04-22T10:18:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="node接收文件上传"><a href="#node接收文件上传" class="headerlink" title="node接收文件上传"></a>node接收文件上传</h1><p>在做课程设计的时候有一个注册时上传用户头像的需求，先来说说自己的思路：</p>
-<ol>
-<li>首先，前端上传图片，发送请求至后端</li>
-<li>后端将文件接收，修改文件名，存入资源，然后将文件路径加入到用户信息的数据库中</li>
-<li>服务端将文件url返回给前端，供用户预览</li>
-<li>用户在使用页面时会直接使用数据库中该用户对应的头像url，显示出来</li>
-<li>用户可以重新上传，重新上传后，更新文件，其他不变</li>
-</ol>
-<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><p>express提供了一个插件multiparty可以完成后端的需求，目前仅了解到其处理文件方面的功能</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//首先其他的挂载路由导入模块什么的我们不多说</span></span><br><span class="line"><span class="comment">//安装  npm i multiparty --save</span></span><br><span class="line"><span class="comment">//引入模块</span></span><br><span class="line"><span class="keyword">const</span> multipaty=<span class="built_in">require</span>(<span class="string">'multiparty'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//书写接收请求时的服务器要做的事情</span></span><br><span class="line">router.post(<span class="string">'/savePhoto'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,res,next</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//生成该对象并配置保存路径</span></span><br><span class="line">    <span class="keyword">const</span> form=<span class="keyword">new</span> multiparty.Form(&#123;<span class="attr">uploadDir</span>:<span class="string">'./dist/static'</span>&#125;);</span><br><span class="line">    <span class="comment">//上传完成后的处理</span></span><br><span class="line">    form.parse(req,<span class="function"><span class="keyword">function</span>(<span class="params">err,fields,files</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> filesTemp(<span class="built_in">JSON</span>.stringify(files,<span class="literal">null</span>,);</span><br><span class="line">        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">        	<span class="built_in">console</span>.log(err);    </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'filesTemp'</span>);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">先来看看这里的输出，随便上传的一张图片</span></span><br><span class="line"><span class="comment">&#123;"file":[&#123;"fieldName":"file","originalFilename":"TIM图片20190331192334.jpg","path":".\\dist\\static\\D8M-A-Rh6fjD12qmubeIwhAG.jpg","headers":&#123;"content-disposition":"form-data; name=\"file\"; filename=\"TIM图片20190331192334.jpg\"","content-type":"image/jpeg"&#125;,"size":662937&#125;]&#125;</span></span><br><span class="line"><span class="comment">可以看到,这个时候图片已经存储到本地了，接下来就要进行重命名，方便后期被用户请求</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">            <span class="comment">//一些配置，</span></span><br><span class="line">            <span class="keyword">const</span> inputFile=files.file[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> uploadPath=inputFile.path;</span><br><span class="line">            <span class="keyword">let</span> fileName=req.cookies.user.num+<span class="string">'.'</span>+inputFile.originalFilename.split(<span class="string">'.'</span>)[<span class="number">1</span>];<span class="comment">//利用前端发来的cookie将文件命名为 电话号码.后缀名的格式</span></span><br><span class="line">            <span class="keyword">const</span> dstPath=<span class="string">'./dist/static/'</span>+fileName;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//首先判断服务器中是否已经有该命名的文件</span></span><br><span class="line">            fs.exists(dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">exists</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(exists)&#123;</span><br><span class="line">                    <span class="comment">//如果有就删除</span></span><br><span class="line">                    fs.unlink(dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span>(err)<span class="keyword">return</span> <span class="built_in">console</span>.log(<span class="string">'删除失败'</span>+err);</span><br><span class="line">                        <span class="comment">//将上传文件重命名                                 （这里有一些小问题，如果文件格式不一样将不会删除，改进思路是只判断文件名，不考虑后缀）</span></span><br><span class="line">                        fs.rename(uploadPath,dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                            <span class="keyword">if</span>(err)&#123;</span><br><span class="line">                                <span class="built_in">console</span>.log(<span class="string">'rename error'</span>+err);</span><br><span class="line">                            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                                <span class="built_in">console</span>.log(<span class="string">'rename ok'</span>);</span><br><span class="line">                                <span class="comment">//更新数据库中用户头像路径</span></span><br><span class="line">                                users_personal.update(&#123;<span class="attr">phone_number</span>:req.cookies.user.num&#125;,&#123;<span class="attr">photo</span>:<span class="string">'/static/'</span>+fileName&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                                    <span class="keyword">if</span>(err) <span class="keyword">return</span> <span class="built_in">console</span>.log(err);</span><br><span class="line">                             		<span class="comment">//查询数据库并将数据更新到cookie</span></span><br><span class="line">                                    users_personal.find(&#123;<span class="attr">phone_number</span>: req.cookies.user.num&#125;,<span class="string">'password name photo school gender phone_number'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,ret</span>)</span>&#123;</span><br><span class="line">                                        res.cookie(<span class="string">'user'</span>,&#123;</span><br><span class="line">                                            name:ret[<span class="number">0</span>].name,</span><br><span class="line">                                            photo:ret[<span class="number">0</span>].photo,</span><br><span class="line">                                            school:ret[<span class="number">0</span>].school,</span><br><span class="line">                                            gender:ret[<span class="number">0</span>].gender,</span><br><span class="line">                                            num:ret[<span class="number">0</span>].phone_number</span><br><span class="line">                                        &#125;,&#123;</span><br><span class="line">                                            maxAge: <span class="number">600000</span></span><br><span class="line">                                        &#125;);</span><br><span class="line">                                        res.json(response);</span><br><span class="line">                                    &#125;)</span><br><span class="line">                                &#125;)</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;<span class="comment">//如果没有就直接重命名并更新数据库返回结果</span></span><br><span class="line">                    fs.rename(uploadPath,dstPath,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span>(err)&#123;</span><br><span class="line">                            <span class="built_in">console</span>.log(<span class="string">'rename error'</span>+err);</span><br><span class="line">                        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="built_in">console</span>.log(<span class="string">'rename ok'</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>可以看到，上面的代码已经可以看到回调地狱的雏形了，对此我感到十分荣幸，能够接触到真正的回调地狱，因此下一步的计划自然是优化，用promise封装</p>
-<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><p>前端在后台图片更新后前端图片并不会自动更新，因为图片路径没有变，所以还是从缓存中加载图片</p>
-<p>解决办法是在图片路径后面加上一个随机数作为请求参数，由于该参数是无意义的，所以不影响</p>
-<p>我用的是vue框架，因此前端要做的就是给路径后加一个”?t=tmp”</p>
-<p>在图片更换请求的回调中改变tmp就行了</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/22/记一次用node接收上传文件/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1402,11 +1467,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cao</a>
+                <a href="javascript:void(0)" class="js-tag color4">IFC</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">IFC</a>
+                <a href="javascript:void(0)" class="js-tag color4">cao</a>
               </li>
              
               <li class="article-tag-list-item">

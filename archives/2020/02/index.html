@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>对象和原始类型的转换 | Hexo</title>
+  <title>Archives: 2020/2 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
-<meta name="keywords" content="js">
-<meta property="og:type" content="article">
-<meta property="og:title" content="对象和原始类型的转换">
-<meta property="og:url" content="http://yoursite.com/2019/09/10/对象和原始类型的转换/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/archives/2020/02/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-11T01:45:26.059Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="对象和原始类型的转换">
-<meta name="twitter:description" content="原始值=&amp;gt;对象在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁 123var s=&apos;ri&apos;s.len=4;var t=s.len  //undefined  上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样 1var cao=new String(&apos;cnm&apos;)  这才是一个正儿八经的对">
+<meta name="twitter:title" content="Hexo">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -155,211 +150,76 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-对象和原始类型的转换" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      对象和原始类型的转换
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/02/25/寒假学习es6-symbol/" class="archive-article-date">
+  	<time datetime="2020-02-25T06:25:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-25</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/02/25/寒假学习es6-symbol/">寒假学习es6-symbol</a>
     </h1>
   
 
-        
-        <a href="/2019/09/10/对象和原始类型的转换/" class="archive-article-date">
-  	<time datetime="2019-09-10T00:16:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="原始值-gt-对象"><a href="#原始值-gt-对象" class="headerlink" title="原始值=&gt;对象"></a>原始值=&gt;对象</h2><p>在使用原始值的方法的时候会为其创建1.一个临时的包装对象，用完即销毁</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s=<span class="string">'ri'</span></span><br><span class="line">s.len=<span class="number">4</span>;</span><br><span class="line"><span class="keyword">var</span> t=s.len  <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+        <div class="article-info info-on-right">
+          
+          
 
-<p>上面是犀牛书上的一个例子，s.len=4实际上是对s的一个临时对象赋值为4，这个操作结束后这个对象就销毁了，因此这个操作就好像没发生一样</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cao=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">'cnm'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这才是一个正儿八经的对象，其他的原始值到对象的转换也是如此</p>
-<p>用Object()将null和undefined转换为对象不会抛出异常,会获得一个空对象</p>
-<h2 id="对象-gt-原始值"><a href="#对象-gt-原始值" class="headerlink" title="对象=&gt;原始值"></a>对象=&gt;原始值</h2><p>首先两个对象之间的比较当且仅当它们引用相同时才相等，即使他们看起来长得一样</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=[];</span><br><span class="line"><span class="keyword">var</span> b=[];</span><br><span class="line">a==b;  <span class="comment">//false</span></span><br><span class="line"><span class="keyword">var</span> c=[];</span><br><span class="line"><span class="keyword">var</span> d=c;</span><br><span class="line">d[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">c==d <span class="comment">//true   即使只改变d[0]，c[0]也会跟着变，因为他们的引用相同</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="toString和valueOf"><a href="#toString和valueOf" class="headerlink" title="toString和valueOf()"></a>toString和valueOf()</h3><p>这两个方法在对象到原始值的转换过程中起着重要的作用，让我们先看看这两个方法的行为</p>
-<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString"></a>toString</h4><p>除了null和undeifined都有这个方法，执行结果通常和String()一致</p>
-<ul>
-<li>Number：可接收参数将其转换成值定进制的字符串</li>
-<li>Array：相当于join</li>
-<li>Function：返回函数的实现定义的字符串</li>
-<li>Date：返回可被js解析的日期和时间的字符串</li>
-<li>RegExp：返回的时创建它的直接量的字符串</li>
-<li>Object：[Object object]</li>
-</ul>
-<h4 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf()"></a>valueOf()</h4><p>function array object都返回自己本身</p>
-<p>reg、number、string、布尔返回类型为他们自己的值，如果是包装对象，则返回值和自己不全等</p>
-<p>date返回1970.1.1至今的毫秒数</p>
-<h3 id="转换规则"><a href="#转换规则" class="headerlink" title="转换规则"></a>转换规则</h3><h5 id="转成string："><a href="#转成string：" class="headerlink" title="转成string："></a>转成string：</h5><ul>
-<li>对象有toString()且返回原始值，则将原始值转为字符串，如Array、Function、regex等</li>
-<li>如果没有或返回的不是原始值，则看是否有valueOf()</li>
-<li>否则，报错</li>
-</ul>
-<h5 id="转成Number"><a href="#转成Number" class="headerlink" title="转成Number:"></a>转成Number:</h5><ul>
-<li>如果有valueOf。。。</li>
-<li>如果有toString()…</li>
-<li>报错</li>
-</ul>
-<p>隐式转换的规则同样适用于对象和原始值之间</p>
-<p>​    </p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
         </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/10/对象和原始类型的转换/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
   
-<nav id="article-nav">
-  
-    <a href="/2019/09/11/react学习疑问/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          react学习疑问
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/09/06/IFC/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">IFC</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/02/22/寒假学习es6-对象/" class="archive-article-date">
+  	<time datetime="2020-02-22T12:54:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-22</time>
+</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
+    	 
   
-  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/02/22/寒假学习es6-对象/">寒假学习es6-对象</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+          
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
   
 
-  
-
-  
+    
 
 
           </div>
@@ -382,8 +242,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
